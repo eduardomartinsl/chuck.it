@@ -1,6 +1,7 @@
 package com.app.chuckit.di
 
 import com.app.chuckit.BuildConfig
+import com.app.chuckit.services.NorrisService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -15,11 +16,15 @@ import javax.inject.Singleton
 @Module
 class RemoteModule {
 
-    // TODO: Inserir API URL no BuildConfig
     @Provides
     @Singleton
     fun proveRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("BuildConfig.API_URL")
+        .baseUrl(BuildConfig.API_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    @Provides
+    @Singleton
+    fun provideNorrisService(retrofit: Retrofit): NorrisService =
+        retrofit.create(NorrisService::class.java)
 }
