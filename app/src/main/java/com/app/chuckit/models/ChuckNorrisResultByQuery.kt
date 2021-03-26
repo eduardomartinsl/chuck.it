@@ -1,6 +1,11 @@
 package com.app.chuckit.models
 
+import com.google.gson.annotations.SerializedName
+
 data class ChuckNorrisResultByQuery(
+    @SerializedName("total")
     val total: Int,
-    val ChuckNorrisFacts: List<ChuckNorrisFact>
+
+    @SerializedName("ChuckNorrisFacts")
+    val chuckNorrisFacts: List<ChuckNorrisFact>
 )
