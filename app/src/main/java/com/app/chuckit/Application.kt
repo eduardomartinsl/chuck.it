@@ -5,7 +5,7 @@ import com.app.chuckit.di.*
 
 val Application.component : AppComponents
     get() = DaggerAppComponents.builder()
-        .appModule(AppModule(this))
+        .appModule(AppModule(this, applicationContext))
         .remoteModule(RemoteModule())
         .dBModule(DBModule())
         .build()

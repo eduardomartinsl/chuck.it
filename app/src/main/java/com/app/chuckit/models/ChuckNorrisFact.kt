@@ -3,6 +3,9 @@ package com.app.chuckit.models
 import com.google.gson.annotations.SerializedName
 
 data class ChuckNorrisFact(
+    @SerializedName("id")
+    val id: String,
+
     @SerializedName("categories")
     val categories: List<String>,
 
@@ -11,9 +14,6 @@ data class ChuckNorrisFact(
 
     @SerializedName("icon_url")
     val iconURL: String,
-
-    @SerializedName("id")
-    val id: String,
 
     @SerializedName("updated_at")
     val updatedAt: String,

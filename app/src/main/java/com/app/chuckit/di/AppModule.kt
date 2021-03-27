@@ -16,7 +16,7 @@ import javax.inject.Singleton
  *
  */
 @Module
-open class AppModule(private val app: Application) {
+open class AppModule(private val app: Application, private val context: Context) {
 
     @Provides
     @Singleton
@@ -30,7 +30,7 @@ open class AppModule(private val app: Application) {
     @Singleton
     open fun provideSharedPreferences(): SharedPreferences =
         app.getSharedPreferences(
-            Constants.SHARED_PREFERENCES,
+            context.packageName,
             Context.MODE_PRIVATE
         )
 }
