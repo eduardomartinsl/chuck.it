@@ -17,5 +17,5 @@ interface NorrisService {
     suspend fun getJokeCategories(): List<String>
 
     @GET("search?query={query}")
-    suspend fun searchJokesByQuery(@Path("query") query: String): ChuckNorrisResultByQuery
+    suspend fun getJokesWithQhery(@Path("query") query: String): ChuckNorrisResultByQuery
 }
