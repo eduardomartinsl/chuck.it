@@ -2,7 +2,7 @@ package com.app.chuckit.di
 
 import android.content.Context
 import androidx.room.Room.databaseBuilder
-import com.app.chuckit.db.AppDatabase
+import com.app.chuckit.db.NorrisDatabase
 import com.app.chuckit.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -16,11 +16,11 @@ class DBModule {
     fun providesDB(context: Context) =
         databaseBuilder(
             context,
-            AppDatabase::class.java,
+            NorrisDatabase::class.java,
             Constants.CHUCKIT_DATABASE_NAME
         ).build()
 
     @Provides
-    fun provodesNorrisDao(db: AppDatabase) = db.norrisDao()
+    fun provodesNorrisDao(db: NorrisDatabase) = db.norrisDao()
 
 }
