@@ -25,7 +25,6 @@ import org.junit.runner.RunWith
 @SmallTest
 class NorrisDaoTest {
 
-
     // InstantTaskExecutorRule garante que os jobs são feitos sequencialmente.
     // Evita o erro
     // IllegalStateException: This job has not completed yet at kotlinx.coroutines.JobSupport
@@ -48,7 +47,7 @@ class NorrisDaoTest {
     }
 
     @After
-    fun closeNorrisDatabase(){
+    fun closeNorrisDatabase() {
         norrisDatabase.close()
     }
 
@@ -59,11 +58,11 @@ class NorrisDaoTest {
     }
 
     @Test
-    fun garante_que_chuckNorrisFact_foi_inserido_em_database()  = runBlockingTest {
+    fun garante_que_chuckNorrisFact_foi_inserido_em_database() = runBlockingTest {
 
         val chuckNorrisFact = ChuckNorrisFactsEntity(
             id = "id1",
-            categories =  mutableListOf(),
+            categories = mutableListOf(),
             createdAt = "data de criação",
             iconURL = "url do Icone",
             updatedAt = "Data de update",
@@ -78,11 +77,11 @@ class NorrisDaoTest {
     }
 
     @Test
-    fun garante_que_chuckNorrisFact_foi_removido_de_database()  = runBlockingTest {
+    fun garante_que_chuckNorrisFact_foi_removido_de_database() = runBlockingTest {
 
         val chuckNorrisFact = ChuckNorrisFactsEntity(
             id = "id1",
-            categories =  mutableListOf(),
+            categories = mutableListOf(),
             createdAt = "data de criação",
             iconURL = "url do Icone",
             updatedAt = "Data de update",
