@@ -30,7 +30,7 @@ class SearchChuckNorrisFactsViewModel(application: Application) : AndroidViewMod
         get() = _categories
 
     private val _searchSugestions = MutableLiveData<List<String>>()
-    val SearchSugestions : LiveData<List<String>>
+    val SearchSugestions: LiveData<List<String>>
         get() = _searchSugestions
 
     private fun loadSearchSugestions() {
@@ -47,7 +47,7 @@ class SearchChuckNorrisFactsViewModel(application: Application) : AndroidViewMod
         }
     }
 
-    fun saveSearchSugestion(sugestion: String){
+    fun saveSearchSugestion(sugestion: String) {
         viewModelScope.launch {
             norrisRepository.saveSearchSugestion(sugestion)
         }

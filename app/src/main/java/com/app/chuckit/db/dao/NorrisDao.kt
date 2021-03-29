@@ -8,7 +8,6 @@ import androidx.room.Update
 import com.app.chuckit.db.entities.CategoriesEntity
 import com.app.chuckit.db.entities.ChuckNorrisFactsEntity
 import com.app.chuckit.db.entities.SearchSugestionEntity
-import com.app.chuckit.models.ChuckNorrisFact
 
 @Dao
 interface NorrisDao {

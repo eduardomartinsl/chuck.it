@@ -2,12 +2,14 @@ package com.app.chuckit.viewModels
 
 import android.app.Application
 import android.content.SharedPreferences
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.app.chuckit.component
 import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.repository.NorrisRepository
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 class ChuckNorrisFactsViewModel(application: Application) : AndroidViewModel(application) {
@@ -30,15 +32,15 @@ class ChuckNorrisFactsViewModel(application: Application) : AndroidViewModel(app
     val isLoading: LiveData<Boolean>
         get() = _isLoading
 
-    fun searchChuckNorrisFactsWithQuery(query: String){
+    fun searchChuckNorrisFactsWithQuery(query: String) {
         viewModelScope.launch {
             _isLoading.postValue(true)
             try {
                 val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
                 _chuckNorrisFacts.postValue(chuckNorrisFacts)
-            } catch (exception: Exception){
+            } catch (exception: Exception) {
 
-            }finally {
+            } finally {
                 _isLoading.postValue(false)
             }
         }

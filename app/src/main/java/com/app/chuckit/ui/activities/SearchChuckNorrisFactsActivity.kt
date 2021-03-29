@@ -1,8 +1,8 @@
 package com.app.chuckit.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.app.chuckit.R
 import com.app.chuckit.component
 import com.app.chuckit.viewModels.SearchChuckNorrisFactsViewModel
