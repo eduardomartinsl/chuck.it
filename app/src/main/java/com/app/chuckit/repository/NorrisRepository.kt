@@ -1,25 +1,49 @@
 package com.app.chuckit.repository
 
+import android.util.Log
 import com.app.chuckit.db.dao.NorrisDao
+import com.app.chuckit.db.entities.CategoriesEntity
+import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.services.NorrisService
+import java.lang.Exception
+import javax.inject.Inject
 
-class NorrisRepository(
+class NorrisRepository @Inject constructor(
     private val norrisService: NorrisService,
     private val norrisDao: NorrisDao
 ) {
 
-    /////SERVICE////////////////////////////////////////////////////////////////////////////////////
+    suspend fun getAllCategories() : List<String> {
+        var categories = norrisDao.selectAllCategories()
 
-    suspend fun getRandomJoke() = norrisService.getRandomJoke()
+        if(categories.isEmpty()){
+            try {
+                categories = norrisService.getCategories().also {
 
-    suspend fun getRandomJokeByCategory(category: String) =
-        norrisService.getRandomJokeByCategory(category)
+                    for (category in it)
+                        norrisDao.saveCategories(CategoriesEntity(value = category))
+                }
+            }catch (exception: Exception){
+                Log.e("CategoriesException", "${exception.stackTrace}")
+                return emptyList()
+            }
+        }
+        return categories
+    }
 
-    suspend fun getJokeCategories() = norrisService.getJokeCategories()
+    suspend fun searchChuckNorrisFactsWithQuery(query: String) : List<ChuckNorrisFact> {
+        val chuckNorrisFactsResultByQuery = norrisService.searchChuckNorrisFactsWithQuery(query)
+        return chuckNorrisFactsResultByQuery.chuckNorrisFacts
 
-    suspend fun getJokesWithQhery(query: String) = norrisService.getJokesWithQhery(query)
+    }
 
-    /////DAO////////////////////////////////////////////////////////////////////////////////////////
+    suspend fun selectAllChuckNorrisFactsFromPersistence() = norrisDao.selectAllChuckNorrisFacts()
 
-    suspend fun selectAllChuckNorrisFacts() = norrisDao.selectAllChuckNorrisFacts()
+    suspend fun saveSearchSugestion(searchSugestion: String) {
+//        norrisDao.saveSearchSugestion(searchSugestion)
+    }
+
+    suspend fun loadSearchSugestions(): List<String> {
+        return norrisDao.selectAllSearchSugestions()
+    }
 }
