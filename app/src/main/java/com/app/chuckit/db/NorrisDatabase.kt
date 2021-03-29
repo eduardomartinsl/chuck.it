@@ -19,6 +19,6 @@ import com.app.chuckit.utils.Converters
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-abstract class AppDatabase : RoomDatabase() {
+abstract class NorrisDatabase : RoomDatabase() {
     abstract fun norrisDao(): NorrisDao
 }

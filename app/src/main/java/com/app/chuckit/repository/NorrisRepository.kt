@@ -3,16 +3,18 @@ package com.app.chuckit.repository
 import android.util.Log
 import com.app.chuckit.db.dao.NorrisDao
 import com.app.chuckit.db.entities.CategoriesEntity
+import com.app.chuckit.db.entities.SearchSugestionEntity
 import com.app.chuckit.models.ChuckNorrisFact
+import com.app.chuckit.repository.interfaces.BaseNorrisRepository
 import com.app.chuckit.services.NorrisService
 import javax.inject.Inject
 
 class NorrisRepository @Inject constructor(
     private val norrisService: NorrisService,
     private val norrisDao: NorrisDao
-) {
+) : BaseNorrisRepository {
 
-    suspend fun getAllCategories(): List<String> {
+    override suspend fun getAllCategories(): List<String> {
         var categories = norrisDao.selectAllCategories()
 
         if (categories.isEmpty()) {
@@ -30,19 +32,18 @@ class NorrisRepository @Inject constructor(
         return categories
     }
 
-    suspend fun searchChuckNorrisFactsWithQuery(query: String): List<ChuckNorrisFact> {
+    override suspend fun searchChuckNorrisFactsWithQuery(query: String): List<ChuckNorrisFact> {
         val chuckNorrisFactsResultByQuery = norrisService.searchChuckNorrisFactsWithQuery(query)
         return chuckNorrisFactsResultByQuery.chuckNorrisFacts
 
     }
 
-    suspend fun selectAllChuckNorrisFactsFromPersistence() = norrisDao.selectAllChuckNorrisFacts()
-
-    suspend fun saveSearchSugestion(searchSugestion: String) {
-//        norrisDao.saveSearchSugestion(searchSugestion)
+    override suspend fun saveSearchSugestion(searchSugestionStr: String) {
+        //norrisDao.saveCategories(CategoriesEntity(value = category))
+        norrisDao.saveSearchSugestion(SearchSugestionEntity(value = searchSugestionStr))
     }
 
-    suspend fun loadSearchSugestions(): List<String> {
+    override suspend fun loadSearchSugestions(): List<String> {
         return norrisDao.selectAllSearchSugestions()
     }
 }
