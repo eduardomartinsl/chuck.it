@@ -1,18 +1,14 @@
 package com.app.chuckit.repository.interfaces
 
 import com.app.chuckit.models.ChuckNorrisFact
-import com.app.chuckit.models.ChuckNorrisResultByQuery
-import com.app.chuckit.utils.Resource
 
 interface BaseNorrisRepository {
 
-    suspend fun getRandomJoke(): Resource<ChuckNorrisFact>
+    suspend fun getAllCategories(): List<String>
 
-    suspend fun getRandomJokeByCategory(category: String) : Resource<ChuckNorrisFact>
+    suspend fun searchChuckNorrisFactsWithQuery(query: String): List<ChuckNorrisFact>
 
-    suspend fun getJokeCategories() : Resource<List<String>>
+    suspend fun saveSearchSugestion(searchSugestionStr: String)
 
-    suspend fun getJokesWithQhery(query: String) : Resource<ChuckNorrisResultByQuery>
-
-    suspend fun selectAllChuckNorrisFacts()
+    suspend fun loadSearchSugestions(): List<String>
 }

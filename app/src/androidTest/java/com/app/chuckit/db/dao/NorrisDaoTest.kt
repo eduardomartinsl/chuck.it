@@ -52,7 +52,7 @@ class NorrisDaoTest {
     }
 
     @Test
-    fun garante_que_database_esta_vazia() = runBlockingTest {
+    fun garante_que_database_nao_possui_chuck_norris_facts() = runBlockingTest {
         val chuckNorrisFactsList = norrisDao.selectAllChuckNorrisFacts()
         assertThat(chuckNorrisFactsList).isEmpty()
     }
