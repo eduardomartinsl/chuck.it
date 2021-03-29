@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey
 @Entity
 data class CategoriesEntity(
 
+    // TODO = testar autogenerate do id
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
 
     val value: String
 

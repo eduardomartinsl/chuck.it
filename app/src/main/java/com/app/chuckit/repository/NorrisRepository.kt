@@ -20,9 +20,8 @@ class NorrisRepository @Inject constructor(
             try {
                 categories = norrisService.getCategories().also {
 
-                    // TODO: Preciso melhorar essa maneira de salvar as categorias
-//                    for (category in it)
-//                        norrisDao.saveCategories(CategoriesEntity(value = category))
+                    for (category in it)
+                        norrisDao.saveCategories(CategoriesEntity(value = category))
                 }
             }catch (exception: Exception){
                 Log.e("CategoriesException", "${exception.stackTrace}")
