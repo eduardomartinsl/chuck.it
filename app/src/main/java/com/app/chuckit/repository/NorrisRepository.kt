@@ -1,117 +1,48 @@
 package com.app.chuckit.repository
 
+import android.util.Log
 import com.app.chuckit.db.dao.NorrisDao
+import com.app.chuckit.db.entities.CategoriesEntity
 import com.app.chuckit.models.ChuckNorrisFact
-import com.app.chuckit.models.ChuckNorrisResultByQuery
-import com.app.chuckit.repository.interfaces.BaseNorrisRepository
 import com.app.chuckit.services.NorrisService
-import com.app.chuckit.utils.Resource
-import java.lang.Exception
 import javax.inject.Inject
 
-// TODO: Seria interessante reduzir essa repetição de código
 class NorrisRepository @Inject constructor(
     private val norrisService: NorrisService,
     private val norrisDao: NorrisDao
-) : BaseNorrisRepository {
+) {
 
-    /////SERVICE////////////////////////////////////////////////////////////////////////////////////
+    suspend fun getAllCategories(): List<String> {
+        var categories = norrisDao.selectAllCategories()
 
-    override suspend fun getRandomJoke(): Resource<ChuckNorrisFact> {
-        return try {
-            val response = norrisService.getRandomJoke()
+        if (categories.isEmpty()) {
+            try {
+                categories = norrisService.getCategories().also {
 
-            if (response.isSuccessful) {
-                response.body().let {
-                    return@let Resource.success(it)
+                    for (category in it)
+                        norrisDao.saveCategories(CategoriesEntity(value = category))
                 }
+            } catch (exception: Exception) {
+                Log.e("CategoriesException", "${exception.stackTrace}")
+                return emptyList()
             }
-            //
-            else {
-                Resource.error("Erro desconhecido", data = null)
-            }
-
-        } catch (e: Exception) {
-            Resource.error(
-                "Não foi possível encontrar o servidor. " +
-                        "Verifique sua conexão e tente novamente",
-                data = null
-            )
         }
+        return categories
     }
 
-    override suspend fun getRandomJokeByCategory(category: String): Resource<ChuckNorrisFact> {
+    suspend fun searchChuckNorrisFactsWithQuery(query: String): List<ChuckNorrisFact> {
+        val chuckNorrisFactsResultByQuery = norrisService.searchChuckNorrisFactsWithQuery(query)
+        return chuckNorrisFactsResultByQuery.chuckNorrisFacts
 
-        return try {
-            val response = norrisService.getRandomJokeByCategory(category)
-
-            if (response.isSuccessful) {
-                response.body().let {
-                    return@let Resource.success(it)
-                }
-            }
-            //
-            else {
-                Resource.error("Erro desconhecido", data = null)
-            }
-        } catch (e: Exception) {
-            Resource.error(
-                "Não foi possível encontrar o servidor. " +
-                        "Verifique sua conexão e tente novamente",
-                data = null
-            )
-        }
     }
 
-    override suspend fun getJokeCategories(): Resource<List<String>> {
+    suspend fun selectAllChuckNorrisFactsFromPersistence() = norrisDao.selectAllChuckNorrisFacts()
 
-        return try {
-            val response = norrisService.getJokeCategories()
-
-            if (response.isSuccessful) {
-                response.body().let {
-                    return@let Resource.success(it)
-                }
-            }
-            //
-            else {
-                Resource.error("Erro desconhecido", data = null)
-            }
-        } catch (e: Exception) {
-            Resource.error(
-                "Não foi possível encontrar o servidor. " +
-                        "Verifique sua conexão e tente novamente",
-                data = null
-            )
-        }
+    suspend fun saveSearchSugestion(searchSugestion: String) {
+//        norrisDao.saveSearchSugestion(searchSugestion)
     }
 
-    override suspend fun getJokesWithQhery(query: String): Resource<ChuckNorrisResultByQuery> {
-
-        return try {
-            val response = norrisService.getJokesWithQhery(query)
-
-            if (response.isSuccessful) {
-                response.body().let {
-                    return@let Resource.success(it)
-                }
-            }
-            //
-            else {
-                Resource.error("Erro desconhecido", data = null)
-            }
-        } catch (e: Exception) {
-            Resource.error(
-                "Não foi possível encontrar o servidor. " +
-                        "Verifique sua conexão e tente novamente",
-                data = null
-            )
-        }
-    }
-
-    /////DAO////////////////////////////////////////////////////////////////////////////////////////
-
-    override suspend fun selectAllChuckNorrisFacts() {
-        norrisDao.selectAllChuckNorrisFacts()
+    suspend fun loadSearchSugestions(): List<String> {
+        return norrisDao.selectAllSearchSugestions()
     }
 }

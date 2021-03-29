@@ -5,7 +5,6 @@ import com.app.chuckit.ui.activities.SearchChuckNorrisFactsActivity
 import com.app.chuckit.viewModels.ChuckNorrisFactsViewModel
 import com.app.chuckit.viewModels.SearchChuckNorrisFactsViewModel
 import dagger.Component
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
