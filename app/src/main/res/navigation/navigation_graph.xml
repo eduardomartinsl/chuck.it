@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_graph"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
     app:startDestination="@id/chuckNorrisFactsFragment">
 
     <fragment
         android:id="@+id/chuckNorrisFactsFragment"
         android:name="com.app.chuckit.ui.fragments.ChuckNorrisFactsFragment"
-        android:label="ChuckNorrisFactsFragment" >
+        android:label="ChuckNorrisFactsFragment"
+        tools:layout="@layout/fragment_chuck_norris_facts">
         <action
             android:id="@+id/action_chuckNorrisFactsFragment_to_searchChuckNorrisFactsFragment"
             app:destination="@id/searchChuckNorrisFactsFragment"
@@ -15,7 +18,8 @@
     <fragment
         android:id="@+id/searchChuckNorrisFactsFragment"
         android:name="com.app.chuckit.ui.fragments.SearchChuckNorrisFactsFragment"
-        android:label="SearchChuckNorrisFactsFragment" >
+        android:label="SearchChuckNorrisFactsFragment"
+        tools:layout="@layout/fragment_search_chuck_norris_facts">
         <action
             android:id="@+id/action_searchChuckNorrisFactsFragment_to_chuckNorrisFactsFragment"
             app:destination="@id/chuckNorrisFactsFragment" />
