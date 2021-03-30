@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Chuck.it</string>
+    <string name="search_chuck_norris_facts">Search Chuck Norris Facts</string>
 </resources>
