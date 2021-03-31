@@ -6,16 +6,16 @@
     android:layout_margin="2dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewSearchSugestion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="searchSugestion"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDeleteSugestion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewDeleteSugestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/delete_search_sugestion"

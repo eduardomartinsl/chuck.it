@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp
-">
+    android:padding="8dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutSearchStr"
@@ -20,12 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="hint" />
+            android:hint="@string/search_chuck_norris_facts" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCategory"
+        android:id="@+id/recyclerViewCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategory"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategories"
         tools:listitem="@layout/item_search_sugestion">
 
     </androidx.recyclerview.widget.RecyclerView>

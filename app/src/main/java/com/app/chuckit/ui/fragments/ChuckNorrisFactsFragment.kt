@@ -1,31 +1,40 @@
 package com.app.chuckit.ui.fragments
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.app.chuckit.R
+import com.app.chuckit.adapters.ChuckNorrisFactsAdapter
+import com.app.chuckit.databinding.FragmentChuckNorrisFactsBinding
 import com.app.chuckit.viewModels.ChuckItViewModel
 
-class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts) {
+class ChuckNorrisFactsFragment : Fragment() {
 
     private val chuckItViewModel by viewModels<ChuckItViewModel>()
+
+    private lateinit var binding: FragmentChuckNorrisFactsBinding
 
     private val navigationController by lazy {
         findNavController()
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_chuck_norris_facts, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chuckItViewModel.chuckNorrisFacts.observe(this, Observer {
-            // TODO: Prencher recyclerView com ChuckNorrisFacts
+        binding = FragmentChuckNorrisFactsBinding.bind(view)
+
+        chuckItViewModel.chuckNorrisFacts.observe(viewLifecycleOwner, {
+            binding.recyclerViewChuckNorrisFacts.adapter = ChuckNorrisFactsAdapter(it)
         })
 
     }

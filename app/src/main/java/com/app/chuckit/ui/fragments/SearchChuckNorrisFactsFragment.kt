@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.app.chuckit.R
+import com.app.chuckit.adapters.CategoriesAdapter
+import com.app.chuckit.adapters.SearchSugestionsAdapter
+import com.app.chuckit.databinding.FragmentSearchChuckNorrisFactsBinding
 import com.app.chuckit.interfaces.ItemClickListener
 import com.app.chuckit.viewModels.ChuckItViewModel
 
@@ -19,16 +21,21 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
         findNavController()
     }
 
+    private lateinit var binding: FragmentSearchChuckNorrisFactsBinding
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentSearchChuckNorrisFactsBinding.bind(view)
+
         chuckItViewModel.loadSearchSugestionsAndCategories()
 
-        chuckItViewModel.searchSugestions.observe(this, Observer {
-            // TODO: Atribuir lista de sugestões na view (Criar recyclerView)
+        chuckItViewModel.searchSugestions.observe(viewLifecycleOwner, {
+            binding.recyclerViewSearchSugestions.adapter = SearchSugestionsAdapter(it)
         })
 
-        chuckItViewModel.categories.observe(this, Observer {
-            // TODO: Atribuir lista de categorias (Criar recyclerView)
+        chuckItViewModel.categories.observe(viewLifecycleOwner, {
+            binding.recyclerViewCategories.adapter = CategoriesAdapter(it)
         })
     }
 
