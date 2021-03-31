@@ -4,36 +4,41 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.chuckit.databinding.ItemCategoryBinding
+import com.app.chuckit.interfaces.ItemClickListener
 
-class CategoriesAdapter(private val categories: List<String>) :
+class CategoriesAdapter(
+    private val categories: List<String>,
+    private val itemClickListener: ItemClickListener
+) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemBinding = ItemCategoryBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+        return ViewHolder(
+            ItemCategoryBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
-        return ViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val category = categories[position]
-        holder.bind(category)
+        with(categories[position]){
+            holder.itemBinding.textViewCategory.text = this
+
+            holder.itemView.setOnClickListener {
+                itemClickListener.onItemClickListener(this)
+            }
+        }
     }
 
     override fun getItemCount(): Int = categories.count()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    inner class ViewHolder(private val itemBinding: ItemCategoryBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(category: String) {
-            itemBinding.textViewCategory.text = category
-        }
-
-    }
+    inner class ViewHolder(val itemBinding: ItemCategoryBinding) :
+        RecyclerView.ViewHolder(itemBinding.root)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 

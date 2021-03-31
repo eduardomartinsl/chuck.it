@@ -4,12 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.chuckit.databinding.ItemSearchSugestionBinding
+import com.app.chuckit.interfaces.ItemClickListener
 
-class SearchSugestionsAdapter(private val searchSugestions: List<String>) :
+class SearchSugestionsAdapter(
+    private val searchSugestions: List<String>,
+    private val itemClickListener: ItemClickListener
+) :
     RecyclerView.Adapter<SearchSugestionsAdapter.ViewHolder>() {
 
+    lateinit var itemBinding: ItemSearchSugestionBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemBinding = ItemSearchSugestionBinding.inflate(
+        itemBinding = ItemSearchSugestionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -18,21 +24,22 @@ class SearchSugestionsAdapter(private val searchSugestions: List<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val searchSugestion = searchSugestions[position]
-        holder.bind(searchSugestion)
+        with(searchSugestions[position]) {
+
+            itemBinding.textViewSearchSugestion.text = this
+
+            holder.itemView.setOnClickListener {
+                itemClickListener.onItemClickListener(this)
+            }
+        }
     }
 
     override fun getItemCount(): Int = searchSugestions.count()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    class ViewHolder(private val itemBinding: ItemSearchSugestionBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(searchSugestions: String){
-            itemBinding.textViewSearchSugestion.text = searchSugestions
-        }
-    }
+    inner class ViewHolder(itemBinding: ItemSearchSugestionBinding) :
+        RecyclerView.ViewHolder(itemBinding.root)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 

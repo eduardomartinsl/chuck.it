@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Chuck.it</string>
-    <string name="search_chuck_norris_facts">Search Chuck Norris Facts</string>
+    <string name="search_chuck_norris_facts">Search Chuck Norris Facts!</string>
     <string name="delete_search_sugestion">Delete Search Sugestion</string>
 </resources>

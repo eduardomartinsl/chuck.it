@@ -6,7 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.app.chuckit.db.NorrisDatabase
+import com.app.chuckit.db.entities.CategoryEntity
 import com.app.chuckit.db.entities.ChuckNorrisFactsEntity
+import com.app.chuckit.db.entities.SearchSugestionEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -95,5 +97,37 @@ class NorrisDaoTest {
         val chuckNorrisFactsList = norrisDao.selectAllChuckNorrisFacts()
 
         assertThat(chuckNorrisFactsList).doesNotContain(chuckNorrisFact)
+    }
+
+    @Test
+    fun garante_que_search_sugestion_foi_inserido_em_database() = runBlockingTest {
+
+        val searchSugestion = SearchSugestionEntity(
+            id = 1,
+            value = "searchSugestionValueTest"
+        )
+
+        norrisDao.insertSearchSugestion(searchSugestion)
+
+        val searchSugestions = norrisDao.selectAllSearchSugestions()
+
+        assertThat(searchSugestions).contains(searchSugestion)
+    }
+
+    @Test
+    fun garante_que_categories_foram_inseridas_em_database() = runBlockingTest {
+
+        val categories = listOf(
+            CategoryEntity(id = 1, value = "categoria 1"),
+            CategoryEntity(id = 2, value = "categoria 2"),
+            CategoryEntity(id = 3, value = "categoria 3")
+        )
+
+        for(category in categories)
+        norrisDao.insertCategories(category)
+
+        val categoriesFromPersistence = norrisDao.selectAllCategories()
+
+        assertThat(categoriesFromPersistence).isEqualTo(categories)
     }
 }

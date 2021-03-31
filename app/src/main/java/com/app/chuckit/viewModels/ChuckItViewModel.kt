@@ -2,6 +2,7 @@ package com.app.chuckit.viewModels
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.*
 import com.app.chuckit.component
 import com.app.chuckit.models.ChuckNorrisFact
@@ -25,9 +26,9 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val chuckNorrisFacts: LiveData<List<ChuckNorrisFact>>
         get() = _chuckNorrisFacts
 
-    private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean>
-        get() = _isLoading
+    private val _isLoadingChuckNorrisFacts = MutableLiveData(false)
+    val isLoadingChuckNorrisFacts: LiveData<Boolean>
+        get() = _isLoadingChuckNorrisFacts
 
     private val _categories = MutableLiveData<List<String>>()
     val categories: LiveData<List<String>>
@@ -39,14 +40,15 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
     fun searchChuckNorrisFactsWithQuery(query: String) {
         viewModelScope.launch {
-            _isLoading.postValue(true)
+            _isLoadingChuckNorrisFacts.postValue(true)
             try {
                 val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
                 _chuckNorrisFacts.postValue(chuckNorrisFacts)
             } catch (exception: Exception) {
+                Log.e("searchException", exception.toString())
 
             } finally {
-                _isLoading.postValue(false)
+                _isLoadingChuckNorrisFacts.postValue(false)
             }
         }
     }

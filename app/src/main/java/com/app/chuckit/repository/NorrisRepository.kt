@@ -2,7 +2,7 @@ package com.app.chuckit.repository
 
 import android.util.Log
 import com.app.chuckit.db.dao.NorrisDao
-import com.app.chuckit.db.entities.CategoriesEntity
+import com.app.chuckit.db.entities.CategoryEntity
 import com.app.chuckit.db.entities.SearchSugestionEntity
 import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.repository.interfaces.BaseNorrisRepository
@@ -15,35 +15,44 @@ class NorrisRepository @Inject constructor(
 ) : BaseNorrisRepository {
 
     override suspend fun getAllCategories(): List<String> {
-        var categories = norrisDao.selectAllCategories()
 
-        if (categories.isEmpty()) {
+        val categories = norrisDao.selectAllCategories().map {
+            it.value
+        }
+
+        if (categories.isNotEmpty()) {
+            return categories
+        } else {
             try {
-                categories = norrisService.getCategories().also {
-
+                return norrisService.getCategories().also {
                     for (category in it)
-                        norrisDao.saveCategories(CategoriesEntity(value = category))
+                        norrisDao.insertCategories(CategoryEntity(value = category))
                 }
-            } catch (exception: Exception) {
-                Log.e("CategoriesException", "${exception.stackTrace}")
-                return emptyList()
+            } catch (e: Exception) {
+                Log.e("getAllCategories", e.toString())
             }
         }
-        return categories
+        return emptyList()
     }
 
     override suspend fun searchChuckNorrisFactsWithQuery(query: String): List<ChuckNorrisFact> {
-        val chuckNorrisFactsResultByQuery = norrisService.searchChuckNorrisFactsWithQuery(query)
-        return chuckNorrisFactsResultByQuery.chuckNorrisFacts
-
+        try {
+            val chuckNorrisFactsResultByQuery = norrisService.searchChuckNorrisFactsWithQuery(query)
+            return chuckNorrisFactsResultByQuery.chuckNorrisFacts
+        } catch (e: Exception) {
+            Log.e("search", e.toString())
+        } finally {
+        }
+        return emptyList()
     }
 
     override suspend fun saveSearchSugestion(searchSugestionStr: String) {
-        //norrisDao.saveCategories(CategoriesEntity(value = category))
-        norrisDao.saveSearchSugestion(SearchSugestionEntity(value = searchSugestionStr))
+        norrisDao.insertSearchSugestion(SearchSugestionEntity(value = searchSugestionStr))
     }
 
     override suspend fun loadSearchSugestions(): List<String> {
-        return norrisDao.selectAllSearchSugestions()
+        return norrisDao.selectAllSearchSugestions().map {
+            it.value
+        }
     }
 }
