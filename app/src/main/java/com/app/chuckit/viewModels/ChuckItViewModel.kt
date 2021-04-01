@@ -2,7 +2,11 @@ package com.app.chuckit.viewModels
 
 import android.app.Application
 import android.content.SharedPreferences
-import androidx.lifecycle.*
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.app.chuckit.component
 import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.repository.NorrisRepository
@@ -25,9 +29,9 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val chuckNorrisFacts: LiveData<List<ChuckNorrisFact>>
         get() = _chuckNorrisFacts
 
-    private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean>
-        get() = _isLoading
+    private val _isLoadingChuckNorrisFacts = MutableLiveData(false)
+    val isLoadingChuckNorrisFacts: LiveData<Boolean>
+        get() = _isLoadingChuckNorrisFacts
 
     private val _categories = MutableLiveData<List<String>>()
     val categories: LiveData<List<String>>
@@ -37,23 +41,20 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val searchSugestions: LiveData<List<String>>
         get() = _searchSugestions
 
-    fun searchChuckNorrisFactsWithQuery(query: String) {
-        viewModelScope.launch {
-            _isLoading.postValue(true)
-            try {
-                val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
-                _chuckNorrisFacts.postValue(chuckNorrisFacts)
-            } catch (exception: Exception) {
-
-            } finally {
-                _isLoading.postValue(false)
-            }
-        }
-    }
-
-    fun loadSearchSugestionsAndCategories(){
+    fun loadSearchSugestionsAndCategories() {
         loadSearchSugestions()
         getAllCategories()
+    }
+
+    suspend fun searchChuckNorrisFactsWithQuery(query: String) {
+        _isLoadingChuckNorrisFacts.postValue(true)
+        try {
+            norrisRepository.searchChuckNorrisFactsWithQuery(query)
+        } catch (exception: Exception) {
+            Log.e("searchException", exception.toString())
+        } finally {
+            _isLoadingChuckNorrisFacts.postValue(false)
+        }
     }
 
     private fun loadSearchSugestions() {
@@ -76,4 +77,9 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun getAllNorrisFacts() {
+        viewModelScope.launch {
+            _chuckNorrisFacts.postValue(norrisRepository.getAllNorrisFacts())
+        }
+    }
 }

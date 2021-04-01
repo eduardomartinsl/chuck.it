@@ -6,6 +6,6 @@ data class ChuckNorrisFactsResultByQuery(
     @SerializedName("total")
     val total: Int,
 
-    @SerializedName("ChuckNorrisFacts")
+    @SerializedName("result")
     val chuckNorrisFacts: List<ChuckNorrisFact>
 )

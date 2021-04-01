@@ -7,10 +7,11 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.chuckit.R
+import com.app.chuckit.adapters.ChuckNorrisFactsAdapter
+import com.app.chuckit.databinding.FragmentChuckNorrisFactsBinding
 import com.app.chuckit.viewModels.ChuckItViewModel
 
 class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts) {
@@ -21,13 +22,35 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts) 
         findNavController()
     }
 
+    private lateinit var binding: FragmentChuckNorrisFactsBinding
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chuckItViewModel.chuckNorrisFacts.observe(this, Observer {
-            // TODO: Prencher recyclerView com ChuckNorrisFacts
+        binding = FragmentChuckNorrisFactsBinding.bind(view)
+
+        initiateLayoutManager()
+        chuckItViewModel.getAllNorrisFacts()
+
+        chuckItViewModel.isLoadingChuckNorrisFacts.observe(viewLifecycleOwner, { isLoading ->
+            //TODO: Loading na tela de ChuckNorrisFacts
         })
 
+        chuckItViewModel.chuckNorrisFacts.observe(viewLifecycleOwner, { chuckNorrisFacts ->
+            val chuckNorrisFactsAdapter = ChuckNorrisFactsAdapter(chuckNorrisFacts)
+            binding.recyclerViewChuckNorrisFacts.adapter = chuckNorrisFactsAdapter
+        })
+    }
+
+    private fun initiateLayoutManager() {
+        val linearLayoutManagerVertical =
+            LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+
+        binding.recyclerViewChuckNorrisFacts.layoutManager = linearLayoutManagerVertical
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +67,8 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts) 
         return when (item.itemId) {
             R.id.action_search_chuck_norris_facts -> {
                 val directions =
-                    ChuckNorrisFactsFragmentDirections.actionChuckNorrisFactsFragmentToSearchChuckNorrisFactsFragment()
+                    ChuckNorrisFactsFragmentDirections
+                        .actionChuckNorrisFactsFragmentToSearchChuckNorrisFactsFragment()
                 navigationController.navigate(directions)
                 true
             }

@@ -4,9 +4,17 @@ import com.app.chuckit.models.ChuckNorrisFact
 
 interface BaseNorrisRepository {
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    suspend fun searchChuckNorrisFactsWithQuery(query: String)
+
+    suspend fun getAllNorrisFacts() : List<ChuckNorrisFact>
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     suspend fun getAllCategories(): List<String>
 
-    suspend fun searchChuckNorrisFactsWithQuery(query: String): List<ChuckNorrisFact>
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     suspend fun saveSearchSugestion(searchSugestionStr: String)
 

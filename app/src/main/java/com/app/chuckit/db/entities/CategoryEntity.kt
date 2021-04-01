@@ -5,9 +5,8 @@ import androidx.room.PrimaryKey
 
 
 @Entity
-data class CategoriesEntity(
+data class CategoryEntity(
 
-    // TODO = testar autogenerate do id
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 

@@ -2,13 +2,14 @@ package com.app.chuckit.db.dao
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.app.chuckit.db.entities.CategoriesEntity
+import com.app.chuckit.db.entities.CategoryEntity
 import com.app.chuckit.db.entities.ChuckNorrisFactsEntity
 import com.app.chuckit.db.entities.SearchSugestionEntity
 
 @Dao
 interface NorrisDao {
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     // ChuckNorrisFactsEntity
 
     @Query("SELECT * FROM chuck_norris_facts")
@@ -20,19 +21,24 @@ interface NorrisDao {
     @Delete
     suspend fun deleteChuckNorrisFact(chuckNorrisFactsEntity: ChuckNorrisFactsEntity)
 
+    @Query("DELETE FROM chuck_norris_facts")
+    suspend fun deleteAllFromChuckNorrisFact()
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     // CategoriesEntity
 
-    @Insert(onConflict = REPLACE, entity = CategoriesEntity::class)
-    suspend fun saveCategories(vararg categoriesEntities: CategoriesEntity)
+    @Insert(onConflict = REPLACE, entity = CategoryEntity::class)
+    suspend fun insertCategories(vararg categoryEntities: CategoryEntity)
 
-    @Query("SELECT value FROM CategoriesEntity")
-    suspend fun selectAllCategories(): List<String>
+    @Query("SELECT * FROM CategoryEntity")
+    suspend fun selectAllCategories(): List<CategoryEntity>
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     // SearchSugestionEntity
 
-    @Update(onConflict = REPLACE, entity = SearchSugestionEntity::class)
-    suspend fun saveSearchSugestion(searchSugestionEntity: SearchSugestionEntity)
+    @Insert(onConflict = REPLACE, entity = SearchSugestionEntity::class)
+    suspend fun insertSearchSugestion(vararg searchSugestionEntity: SearchSugestionEntity)
 
-    @Query("SELECT value FROM searchsugestionentity")
-    suspend fun selectAllSearchSugestions(): List<String>
+    @Query("SELECT * FROM searchsugestionentity")
+    suspend fun selectAllSearchSugestions(): List<SearchSugestionEntity>
 }

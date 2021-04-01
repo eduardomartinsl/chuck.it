@@ -2,49 +2,100 @@ package com.app.chuckit.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.chuckit.R
-import com.app.chuckit.interfaces.ItemClickListener
+import com.app.chuckit.adapters.CategoriesAdapter
+import com.app.chuckit.adapters.SearchSugestionsAdapter
+import com.app.chuckit.databinding.FragmentSearchChuckNorrisFactsBinding
+import com.app.chuckit.interfaces.SearchItemClickListener
 import com.app.chuckit.viewModels.ChuckItViewModel
+import kotlinx.coroutines.launch
 
 class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_norris_facts),
-    ItemClickListener {
+    SearchItemClickListener {
 
     private val chuckItViewModel by viewModels<ChuckItViewModel>()
-
-    private val navController by lazy {
-        findNavController()
-    }
+    private val navController by lazy { findNavController() }
+    private lateinit var binding: FragmentSearchChuckNorrisFactsBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentSearchChuckNorrisFactsBinding.bind(view)
+
+        initiateLayoutManager()
+
         chuckItViewModel.loadSearchSugestionsAndCategories()
 
-        chuckItViewModel.searchSugestions.observe(this, Observer {
-            // TODO: Atribuir lista de sugestões na view (Criar recyclerView)
-        })
+        binding.editTextSearch.setOnEditorActionListener { textView, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
 
-        chuckItViewModel.categories.observe(this, Observer {
-            // TODO: Atribuir lista de categorias (Criar recyclerView)
-        })
+                    val searchStr = textView.text.toString()
+
+                    with(chuckItViewModel) {
+                        this.saveSearchSugestion(searchStr)
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            searchChuckNorrisFactsWithQuery(searchStr)
+                        }
+                        navigateToChuckNorrisFacts()
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+        initiateObservers()
     }
 
-    private fun navigateToChuckNorrisFactsWithSearchQuery() {
-        val direction =
-            SearchChuckNorrisFactsFragmentDirections.actionSearchChuckNorrisFactsFragmentToChuckNorrisFactsFragment()
-        navController.navigate(direction)
+    private fun initiateObservers() {
+        chuckItViewModel.searchSugestions.observe(viewLifecycleOwner,
+            {
+                val searchSugestionsAdapter = SearchSugestionsAdapter(it, this)
+                binding.recyclerViewSearchSugestions.adapter = searchSugestionsAdapter
+            }
+        )
+
+        chuckItViewModel.categories.observe(viewLifecycleOwner,
+            {
+                val categoriesAdapter = CategoriesAdapter(it, this)
+                binding.recyclerViewCategories.adapter = categoriesAdapter
+
+            }
+        )
     }
 
-    override fun onSugestionClickListener(sugestion: String) {
-        chuckItViewModel.searchChuckNorrisFactsWithQuery(sugestion)
-        navigateToChuckNorrisFactsWithSearchQuery()
+    private fun navigateToChuckNorrisFacts() {
+        navController.popBackStack()
     }
 
-    override fun onCategoryClickListener(category: String) {
-        chuckItViewModel.searchChuckNorrisFactsWithQuery(category)
-        navigateToChuckNorrisFactsWithSearchQuery()
+    override fun onSearchItemClickListener(SearchStr: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            chuckItViewModel.searchChuckNorrisFactsWithQuery(SearchStr)
+            navigateToChuckNorrisFacts()
+        }
+    }
+
+    private fun initiateLayoutManager() {
+        val staggeredGridLayoutManager =
+            StaggeredGridLayoutManager(
+                3,
+                StaggeredGridLayoutManager.HORIZONTAL,
+            )
+        binding.recyclerViewCategories.layoutManager = staggeredGridLayoutManager
+
+        val linearLayoutManagerVertical =
+            LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+        binding.recyclerViewSearchSugestions.layoutManager = linearLayoutManagerVertical
     }
 }
