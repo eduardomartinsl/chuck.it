@@ -4,14 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.chuckit.databinding.ItemCategoryBinding
-import com.app.chuckit.interfaces.ItemClickListener
+import com.app.chuckit.interfaces.SearchItemClickListener
 
 class CategoriesAdapter(
     private val categories: List<String>,
-    private val itemClickListener: ItemClickListener
+    private val searchItemClickListener: SearchItemClickListener
 ) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -24,11 +23,13 @@ class CategoriesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(categories[position]){
+        val category = categories[position]
+
+        with(category){
             holder.itemBinding.textViewCategory.text = this
 
             holder.itemView.setOnClickListener {
-                itemClickListener.onItemClickListener(this)
+                searchItemClickListener.onSearchItemClickListener(this)
             }
         }
     }

@@ -10,31 +10,28 @@ class ChuckNorrisFactsAdapter(private val chuckNorrisFacts: List<ChuckNorrisFact
     RecyclerView.Adapter<ChuckNorrisFactsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemBinding =
+        return ViewHolder(
             ItemChuckNorrisFactBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return ViewHolder(itemBinding)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chuckNorrisFact = chuckNorrisFacts[position]
-        holder.bind(chuckNorrisFact)
+        with(chuckNorrisFact) {
+            holder.itemBinding.textViewChuckNorrisFact.text = this.value
+        }
     }
 
     override fun getItemCount(): Int = chuckNorrisFacts.count()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    inner class ViewHolder(private val itemBinding: ItemChuckNorrisFactBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(chuckNorrisFact: ChuckNorrisFact) {
-            itemBinding.textViewChuckNorrisFact.text = chuckNorrisFact.value
-        }
-    }
+    inner class ViewHolder(val itemBinding: ItemChuckNorrisFactBinding) :
+        RecyclerView.ViewHolder(itemBinding.root)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
