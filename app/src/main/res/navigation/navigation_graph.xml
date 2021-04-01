@@ -19,9 +19,5 @@
         android:id="@+id/searchChuckNorrisFactsFragment"
         android:name="com.app.chuckit.ui.fragments.SearchChuckNorrisFactsFragment"
         android:label="SearchChuckNorrisFactsFragment"
-        tools:layout="@layout/fragment_search_chuck_norris_facts">
-        <action
-            android:id="@+id/action_searchChuckNorrisFactsFragment_to_chuckNorrisFactsFragment"
-            app:destination="@id/chuckNorrisFactsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_search_chuck_norris_facts"/>
 </navigation>

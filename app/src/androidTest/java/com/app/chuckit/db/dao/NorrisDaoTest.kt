@@ -123,11 +123,53 @@ class NorrisDaoTest {
             CategoryEntity(id = 3, value = "categoria 3")
         )
 
-        for(category in categories)
-        norrisDao.insertCategories(category)
+        for (category in categories)
+            norrisDao.insertCategories(category)
 
         val categoriesFromPersistence = norrisDao.selectAllCategories()
 
         assertThat(categoriesFromPersistence).isEqualTo(categories)
+    }
+
+    @Test
+    fun garante_que_chuck_norris_facts_esta_limpo_apos_deletar_registros() = runBlockingTest {
+        val chuckNorrisfacts = listOf(
+            ChuckNorrisFactsEntity(
+                id = "id1",
+                categories = mutableListOf(),
+                createdAt = "data de criação",
+                iconURL = "url do Icone",
+                updatedAt = "Data de update",
+                url = "url",
+                value = "valor"
+            ),
+            ChuckNorrisFactsEntity(
+                id = "id2",
+                categories = mutableListOf(),
+                createdAt = "data de criação",
+                iconURL = "url do Icone",
+                updatedAt = "Data de update",
+                url = "url",
+                value = "valor"
+            ),
+            ChuckNorrisFactsEntity(
+                id = "id3",
+                categories = mutableListOf(),
+                createdAt = "data de criação",
+                iconURL = "url do Icone",
+                updatedAt = "Data de update",
+                url = "url",
+                value = "valor"
+            )
+        )
+
+        for (chuckNorrisFact in chuckNorrisfacts)
+            norrisDao.insertChuckNorrisFact(chuckNorrisFact)
+
+        norrisDao.deleteAllFromChuckNorrisFact()
+
+        val chuckNorrisFactsFromPersistance = norrisDao.selectAllChuckNorrisFacts()
+
+        assertThat(chuckNorrisFactsFromPersistance).isEmpty()
     }
 }
