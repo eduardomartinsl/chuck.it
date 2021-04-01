@@ -1,21 +1,17 @@
 package com.app.chuckit.di
 
-import com.app.chuckit.ui.activities.ChuckNorrisFactsActivity
-import com.app.chuckit.ui.activities.SearchChuckNorrisFactsActivity
-import com.app.chuckit.viewModels.ChuckNorrisFactsViewModel
-import com.app.chuckit.viewModels.SearchChuckNorrisFactsViewModel
+import com.app.chuckit.ui.activity.ChuckItActivity
+import com.app.chuckit.viewModels.ChuckItViewModel
 import dagger.Component
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [AppModule::class, RemoteModule::class, DBModule::class])
 interface AppComponents {
     //--- activities
-    fun inject(activity: ChuckNorrisFactsActivity)
-    fun inject(activity: SearchChuckNorrisFactsActivity)
+    fun inject(activity: ChuckItActivity)
 
     //--- viewModels
-    fun inject(viewModel: ChuckNorrisFactsViewModel)
-    fun inject(viewModel: SearchChuckNorrisFactsViewModel)
+    fun inject(viewModel: ChuckItViewModel)
+
 }
