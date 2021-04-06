@@ -322,7 +322,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../Android/Sdk/icons/material/materialicons/share/baseline_share_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../Android/Sdk/icons/material/materialicons/format_quote/baseline_format_quote_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -332,7 +332,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_share_24" />
+                            <entry key="outputName" value="ic_quote" />
                             <entry key="sourceFile" value="C:\Repositorios\Android\Chuck_it" />
                           </map>
                         </option>
