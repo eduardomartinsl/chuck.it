@@ -3,4 +3,6 @@
     <string name="search_chuck_norris_facts">Search Chuck Norris Facts!</string>
     <string name="delete_search_sugestion">Delete Search Sugestion</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec orci dui, egestas nec placerat facilisis, commodo ut augue. Duis varius aliquet nunc sit amet vehicula. Sed suscipit arcu ligula, non accumsan metus pulvinar id. Ut et consectetur lectus. Donec ullamcorper aliquam tellus, eu vehicula orci vulputate sed. Nam ac nisl neque. Donec pharetra nibh neque. Vivamus condimentum vel erat non congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis suscipit id eros suscipit tempor.</string>
+    <string name="categories">Categories!</string>
+    <string name="past_searches">Past Searches</string>
 </resources>

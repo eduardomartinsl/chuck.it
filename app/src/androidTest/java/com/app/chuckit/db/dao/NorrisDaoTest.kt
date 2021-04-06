@@ -172,4 +172,19 @@ class NorrisDaoTest {
 
         assertThat(chuckNorrisFactsFromPersistance).isEmpty()
     }
+
+    @Test
+    fun garante_que_search_sugestion_nao_foi_inserido_duas_vezes() = runBlockingTest {
+        val searchSugestion = SearchSugestionEntity(
+            id = 1,
+            value = "searchSugestionValueTest"
+        )
+
+        norrisDao.insertSearchSugestion(searchSugestion)
+        norrisDao.insertSearchSugestion(searchSugestion)
+
+        val searchSugestions = norrisDao.selectAllSearchSugestions()
+
+        assertThat(searchSugestions).containsNoDuplicates()
+    }
 }

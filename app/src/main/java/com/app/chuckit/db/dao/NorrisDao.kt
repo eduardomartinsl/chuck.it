@@ -39,6 +39,6 @@ interface NorrisDao {
     @Insert(onConflict = REPLACE, entity = SearchSugestionEntity::class)
     suspend fun insertSearchSugestion(vararg searchSugestionEntity: SearchSugestionEntity)
 
-    @Query("SELECT * FROM searchsugestionentity")
+    @Query("SELECT * FROM searchsugestionEntity")
     suspend fun selectAllSearchSugestions(): List<SearchSugestionEntity>
 }

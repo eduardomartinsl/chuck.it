@@ -83,9 +83,12 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
     }
 
     private fun initiateLayoutManager() {
+
+        val gridLayoutRowSpanCount = 2
+
         val staggeredGridLayoutManager =
             StaggeredGridLayoutManager(
-                3,
+                gridLayoutRowSpanCount,
                 StaggeredGridLayoutManager.HORIZONTAL,
             )
         binding.recyclerViewCategories.layoutManager = staggeredGridLayoutManager

@@ -66,7 +66,7 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
     private fun getAllCategories() {
         viewModelScope.launch {
-            val categories = norrisRepository.getAllCategories()
+            val categories = norrisRepository.getCategories()
             _categories.postValue(categories)
         }
     }
