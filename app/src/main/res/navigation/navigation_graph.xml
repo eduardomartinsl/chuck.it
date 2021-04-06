@@ -13,7 +13,8 @@
         <action
             android:id="@+id/action_chuckNorrisFactsFragment_to_searchChuckNorrisFactsFragment"
             app:destination="@id/searchChuckNorrisFactsFragment"
-            app:launchSingleTop="true" />
+            app:launchSingleTop="true"
+            app:popUpTo="@id/chuckNorrisFactsFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchChuckNorrisFactsFragment"

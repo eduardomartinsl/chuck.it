@@ -16,6 +16,7 @@ class NorrisRepository @Inject constructor(
 ) : BaseNorrisRepository {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    // ChuckNorrisFacts
 
     override suspend fun searchChuckNorrisFactsWithQuery(query: String) {
         try {
@@ -62,20 +63,26 @@ class NorrisRepository @Inject constructor(
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Categories
 
-    override suspend fun getAllCategories(): List<String> {
+    override suspend fun getCategories(): List<String> {
 
         val categories = norrisDao.selectAllCategories().map {
             it.value
         }
 
-        if (categories.isNotEmpty())
-            return categories
+        if (categories.isNotEmpty()) {
+            return shuffleAndTakeFirstEightElements(categories)
+        }
 
         try {
-            return norrisService.getCategories().also {
-                for (category in it)
+            norrisService.getCategories().also { categoriesFromService ->
+
+                for (category in categoriesFromService) {
                     norrisDao.insertCategories(CategoryEntity(value = category))
+                }
+
+                return shuffleAndTakeFirstEightElements(categoriesFromService)
             }
         } catch (e: Exception) {
             //TODO: tratar erro aqui
@@ -85,7 +92,11 @@ class NorrisRepository @Inject constructor(
         return emptyList()
     }
 
+    private fun shuffleAndTakeFirstEightElements(categories: List<String>) =
+        categories.shuffled().take(8)
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SearchSugestion
 
     override suspend fun saveSearchSugestion(searchSugestionStr: String) {
         norrisDao.insertSearchSugestion(SearchSugestionEntity(value = searchSugestionStr))
