@@ -9,7 +9,6 @@
         android:id="@+id/textViewSearchSugestion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="searchSugestion"
         app:layout_constraintEnd_toStartOf="@+id/imageViewDeleteSugestion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

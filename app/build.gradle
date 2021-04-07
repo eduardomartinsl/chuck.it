@@ -16,8 +16,6 @@ def gsonVersion = "2.8.6"
 def retrofitVersion = "2.9.0"
 def gsonConverterVersion = '2.8.2'
 def roomVersion = "2.2.6"
-def truthVersion = "1.1.2"
-def coroutinesTestVersion = "1.3.2"
 def fragment_version = "1.3.2"
 
 android {
