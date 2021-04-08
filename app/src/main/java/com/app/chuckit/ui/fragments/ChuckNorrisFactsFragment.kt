@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +20,7 @@ import com.app.chuckit.viewModels.ChuckItViewModel
 class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
     ShareChuckNorrisFactClickListener {
 
-    private val chuckItViewModel by viewModels<ChuckItViewModel>()
+    private val chuckItViewModel by activityViewModels<ChuckItViewModel>()
 
     private val navigationController by lazy {
         findNavController()
@@ -33,7 +34,6 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
         binding = FragmentChuckNorrisFactsBinding.bind(view)
 
         initiateLayoutManager()
-        chuckItViewModel.getAllNorrisFacts()
 
         chuckItViewModel.isLoadingChuckNorrisFacts.observe(viewLifecycleOwner, { isLoading ->
             //TODO: Loading na tela de ChuckNorrisFacts
@@ -43,6 +43,12 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
             val chuckNorrisFactsAdapter = ChuckNorrisFactsAdapter(chuckNorrisFacts, this)
             binding.recyclerViewChuckNorrisFacts.adapter = chuckNorrisFactsAdapter
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        chuckItViewModel.getAllNorrisFacts()
     }
 
     private fun initiateLayoutManager() {

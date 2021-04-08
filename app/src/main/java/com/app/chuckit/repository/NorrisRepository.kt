@@ -18,14 +18,10 @@ class NorrisRepository @Inject constructor(
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // ChuckNorrisFacts
 
-    override suspend fun searchChuckNorrisFactsWithQuery(query: String) {
-        try {
-            val chuckNorrisFactsResultByQuery = norrisService.searchChuckNorrisFactsWithQuery(query)
-            saveChuckNorrisFacts(chuckNorrisFactsResultByQuery.chuckNorrisFacts)
-        } catch (e: Exception) {
-            //TODO: tratar erro aqui
-            Log.e("search", e.toString())
-        }
+    override suspend fun searchChuckNorrisFactsWithQuery(query: String) : List<ChuckNorrisFact> {
+        val result = norrisService.searchChuckNorrisFactsWithQuery(query)
+        saveChuckNorrisFacts(result.chuckNorrisFacts)
+        return result.chuckNorrisFacts
     }
 
     private suspend fun saveChuckNorrisFacts(chuckNorrisFacts: List<ChuckNorrisFact>) {
