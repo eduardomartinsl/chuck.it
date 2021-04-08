@@ -6,7 +6,7 @@ interface BaseNorrisRepository {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    suspend fun searchChuckNorrisFactsWithQuery(query: String)
+    suspend fun searchChuckNorrisFactsWithQuery(query: String) : List<ChuckNorrisFact>
 
     suspend fun getAllNorrisFacts() : List<ChuckNorrisFact>
 

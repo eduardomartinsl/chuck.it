@@ -46,14 +46,20 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
         getAllCategories()
     }
 
-    suspend fun searchChuckNorrisFactsWithQuery(query: String) {
-        _isLoadingChuckNorrisFacts.postValue(true)
-        try {
-            norrisRepository.searchChuckNorrisFactsWithQuery(query)
-        } catch (exception: Exception) {
-            Log.e("searchException", exception.toString())
-        } finally {
-            _isLoadingChuckNorrisFacts.postValue(false)
+    fun searchChuckNorrisFactsWithQuery(query: String) {
+        viewModelScope.launch {
+            _isLoadingChuckNorrisFacts.postValue(true)
+            try {
+
+                val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
+                _chuckNorrisFacts.postValue(chuckNorrisFacts)
+
+            } catch (exception: Exception) {
+
+                Log.e("searchException", exception.toString())
+            } finally {
+                _isLoadingChuckNorrisFacts.postValue(false)
+            }
         }
     }
 

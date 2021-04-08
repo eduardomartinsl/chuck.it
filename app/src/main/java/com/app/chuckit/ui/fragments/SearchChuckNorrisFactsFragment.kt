@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -15,12 +14,11 @@ import com.app.chuckit.adapters.SearchSugestionsAdapter
 import com.app.chuckit.databinding.FragmentSearchChuckNorrisFactsBinding
 import com.app.chuckit.interfaces.SearchItemClickListener
 import com.app.chuckit.viewModels.ChuckItViewModel
-import kotlinx.coroutines.launch
 
 class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_norris_facts),
     SearchItemClickListener {
 
-    private val chuckItViewModel by viewModels<ChuckItViewModel>()
+    private val chuckItViewModel by activityViewModels<ChuckItViewModel>()
     private val navController by lazy { findNavController() }
     private lateinit var binding: FragmentSearchChuckNorrisFactsBinding
 
@@ -41,9 +39,7 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
 
                     with(chuckItViewModel) {
                         this.saveSearchSugestion(searchStr)
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            searchChuckNorrisFactsWithQuery(searchStr)
-                        }
+                        this.searchChuckNorrisFactsWithQuery(searchStr)
                         navigateToChuckNorrisFacts()
                     }
                     true
@@ -51,10 +47,7 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
                 else -> false
             }
         }
-        initiateObservers()
-    }
 
-    private fun initiateObservers() {
         chuckItViewModel.searchSugestions.observe(viewLifecycleOwner,
             {
                 val searchSugestionsAdapter = SearchSugestionsAdapter(it, this)
@@ -76,10 +69,8 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
     }
 
     override fun onSearchItemClickListener(SearchStr: String) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            chuckItViewModel.searchChuckNorrisFactsWithQuery(SearchStr)
-            navigateToChuckNorrisFacts()
-        }
+        chuckItViewModel.searchChuckNorrisFactsWithQuery(SearchStr)
+        navigateToChuckNorrisFacts()
     }
 
     private fun initiateLayoutManager() {
