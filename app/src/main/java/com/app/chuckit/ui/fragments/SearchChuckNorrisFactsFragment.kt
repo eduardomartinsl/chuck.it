@@ -62,6 +62,17 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
 
             }
         )
+
+        chuckItViewModel.isLoadingCategories.observe(viewLifecycleOwner, { isLoading ->
+            if (isLoading) {
+                binding.loadingDotsCategories.visibility = View.VISIBLE
+                binding.recyclerViewCategories.visibility = View.GONE
+            } else {
+                binding.loadingDotsCategories.visibility = View.GONE
+                binding.recyclerViewCategories.visibility = View.VISIBLE
+            }
+        })
+
     }
 
     private fun navigateToChuckNorrisFacts() {

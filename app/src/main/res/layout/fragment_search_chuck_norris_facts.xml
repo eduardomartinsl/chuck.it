@@ -26,8 +26,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSuggestions"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCategories"
         tools:listitem="@layout/item_category" />
+
+    <com.eyalbira.loadingdots.LoadingDots
+        android:id="@+id/loadingDotsCategories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:LoadingDots_dots_color="@color/brown"
+        app:LoadingDots_dots_size="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewCategories" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearchSugestions"
@@ -44,7 +54,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/textViewSuggestions"
+        android:id="@+id/textViewCategories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"

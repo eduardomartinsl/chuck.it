@@ -29,9 +29,13 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val chuckNorrisFacts: LiveData<List<ChuckNorrisFact>>
         get() = _chuckNorrisFacts
 
-    private val _isLoadingChuckNorrisFacts = MutableLiveData(false)
-    val isLoadingChuckNorrisFacts: LiveData<Boolean>
-        get() = _isLoadingChuckNorrisFacts
+    private val _isLoadingFacts = MutableLiveData(false)
+    val isLoadingFacts: LiveData<Boolean>
+        get() = _isLoadingFacts
+
+    private val _isLoadingCategories = MutableLiveData(false)
+    val isLoadingCategories: LiveData<Boolean>
+        get() = _isLoadingCategories
 
     private val _categories = MutableLiveData<List<String>>()
     val categories: LiveData<List<String>>
@@ -48,7 +52,7 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
     fun searchChuckNorrisFactsWithQuery(query: String) {
         viewModelScope.launch {
-            _isLoadingChuckNorrisFacts.postValue(true)
+            _isLoadingFacts.postValue(true)
             try {
 
                 val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
@@ -58,7 +62,7 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
                 Log.e("searchException", exception.toString())
             } finally {
-                _isLoadingChuckNorrisFacts.postValue(false)
+                _isLoadingFacts.postValue(false)
             }
         }
     }
@@ -72,8 +76,10 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
     private fun getAllCategories() {
         viewModelScope.launch {
+            _isLoadingCategories.postValue(true)
             val categories = norrisRepository.getCategories()
             _categories.postValue(categories)
+            _isLoadingCategories.postValue(false)
         }
     }
 
