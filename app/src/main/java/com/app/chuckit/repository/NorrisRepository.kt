@@ -1,6 +1,5 @@
 package com.app.chuckit.repository
 
-import android.util.Log
 import com.app.chuckit.db.dao.NorrisDao
 import com.app.chuckit.db.entities.CategoryEntity
 import com.app.chuckit.db.entities.ChuckNorrisFactsEntity
@@ -18,30 +17,26 @@ class NorrisRepository @Inject constructor(
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // ChuckNorrisFacts
 
-    override suspend fun searchChuckNorrisFactsWithQuery(query: String) : List<ChuckNorrisFact> {
+    override suspend fun searchChuckNorrisFactsWithQuery(query: String): List<ChuckNorrisFact> {
         val result = norrisService.searchChuckNorrisFactsWithQuery(query)
         saveChuckNorrisFacts(result.chuckNorrisFacts)
         return result.chuckNorrisFacts
     }
 
     private suspend fun saveChuckNorrisFacts(chuckNorrisFacts: List<ChuckNorrisFact>) {
-        try {
-            norrisDao.deleteAllFromChuckNorrisFact()
-            for (chuckNorrisFact in chuckNorrisFacts)
-                norrisDao.insertChuckNorrisFact(
-                    ChuckNorrisFactsEntity(
-                        id = chuckNorrisFact.id,
-                        categories = chuckNorrisFact.categories,
-                        createdAt = chuckNorrisFact.createdAt,
-                        iconURL = chuckNorrisFact.iconURL,
-                        updatedAt = chuckNorrisFact.updatedAt,
-                        url = chuckNorrisFact.url,
-                        value = chuckNorrisFact.value
-                    )
+        norrisDao.deleteAllFromChuckNorrisFact()
+        for (chuckNorrisFact in chuckNorrisFacts)
+            norrisDao.insertChuckNorrisFact(
+                ChuckNorrisFactsEntity(
+                    id = chuckNorrisFact.id,
+                    categories = chuckNorrisFact.categories,
+                    createdAt = chuckNorrisFact.createdAt,
+                    iconURL = chuckNorrisFact.iconURL,
+                    updatedAt = chuckNorrisFact.updatedAt,
+                    url = chuckNorrisFact.url,
+                    value = chuckNorrisFact.value
                 )
-        } catch (e: Exception) {
-            //TODO: tratar erro aqui
-        }
+            )
     }
 
     override suspend fun getAllNorrisFacts(): List<ChuckNorrisFact> {
@@ -71,21 +66,14 @@ class NorrisRepository @Inject constructor(
             return shuffleAndTakeFirstEightElements(categories)
         }
 
-        try {
-            norrisService.getCategories().also { categoriesFromService ->
+        norrisService.getCategories().also { categoriesFromService ->
 
-                for (category in categoriesFromService) {
-                    norrisDao.insertCategories(CategoryEntity(value = category))
-                }
-
-                return shuffleAndTakeFirstEightElements(categoriesFromService)
+            for (category in categoriesFromService) {
+                norrisDao.insertCategories(CategoryEntity(value = category))
             }
-        } catch (e: Exception) {
-            //TODO: tratar erro aqui
-            Log.e("getAllCategories", e.toString())
-        }
 
-        return emptyList()
+            return shuffleAndTakeFirstEightElements(categoriesFromService)
+        }
     }
 
     private fun shuffleAndTakeFirstEightElements(categories: List<String>) =

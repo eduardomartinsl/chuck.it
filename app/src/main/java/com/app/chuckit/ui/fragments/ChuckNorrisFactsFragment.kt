@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -36,8 +37,10 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
 
         initiateLayoutManager()
 
-        chuckItViewModel.isLoadingFacts.observe(viewLifecycleOwner, { isLoading ->
-            if (isLoading) {
+        chuckItViewModel.loadSearchSugestionsAndCategories()
+
+        chuckItViewModel.isLoadingFacts.observe(viewLifecycleOwner, { isLoadingFacts ->
+            if (isLoadingFacts) {
                 binding.loadingDots.visibility = VISIBLE
                 binding.recyclerViewChuckNorrisFacts.visibility = GONE
             } else {
@@ -49,6 +52,11 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
         chuckItViewModel.chuckNorrisFacts.observe(viewLifecycleOwner, { chuckNorrisFacts ->
             val chuckNorrisFactsAdapter = ChuckNorrisFactsAdapter(chuckNorrisFacts, this)
             binding.recyclerViewChuckNorrisFacts.adapter = chuckNorrisFactsAdapter
+        })
+
+        chuckItViewModel.loadingFactsError.observe(viewLifecycleOwner, { loadingFactsError ->
+            if (loadingFactsError != null)
+                Toast.makeText(requireContext(), loadingFactsError, Toast.LENGTH_LONG).show()
         })
     }
 
@@ -85,6 +93,7 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
                 val directions =
                     ChuckNorrisFactsFragmentDirections
                         .actionChuckNorrisFactsFragmentToSearchChuckNorrisFactsFragment()
+
                 navigationController.navigate(directions)
                 true
             }

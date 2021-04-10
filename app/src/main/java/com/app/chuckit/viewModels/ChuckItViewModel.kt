@@ -2,16 +2,19 @@ package com.app.chuckit.viewModels
 
 import android.app.Application
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.app.chuckit.R
 import com.app.chuckit.component
 import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.repository.NorrisRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 import javax.inject.Inject
+
 
 class ChuckItViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -45,6 +48,14 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val searchSugestions: LiveData<List<String>>
         get() = _searchSugestions
 
+    private val _loadingFactsError = MutableLiveData<String?>()
+    val loadingFactsError: LiveData<String?>
+        get() = _loadingFactsError
+
+    private val _loadingCategoriesError = MutableLiveData<String>()
+    val loadingCategoriesError: LiveData<String>
+        get() = _loadingCategoriesError
+
     fun loadSearchSugestionsAndCategories() {
         loadSearchSugestions()
         getAllCategories()
@@ -57,13 +68,35 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
                 val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
                 _chuckNorrisFacts.postValue(chuckNorrisFacts)
+                if (chuckNorrisFacts.isEmpty()) {
+                    val emptySearchResult =
+                        getApplication<Application>().resources.getString(R.string.empty_search_result)
+                    loadingFactsErrorPostValue(emptySearchResult)
+                }
 
             } catch (exception: Exception) {
 
-                Log.e("searchException", exception.toString())
+                val genericProblemMessage =
+                    getApplication<Application>().resources.getString(R.string.generic_problem)
+                loadingFactsErrorPostValue(genericProblemMessage)
+
+            } catch (exception: UnknownHostException) {
+
+                val connectionProblemMessage =
+                    getApplication<Application>().resources.getString(R.string.connection_problem)
+                loadingFactsErrorPostValue(connectionProblemMessage)
+
             } finally {
                 _isLoadingFacts.postValue(false)
             }
+        }
+    }
+
+    private fun loadingFactsErrorPostValue(emptySearchResult: String) {
+        _loadingFactsError.postValue(emptySearchResult)
+        viewModelScope.launch {
+            delay(500)
+            _loadingFactsError.postValue(null)
         }
     }
 
@@ -77,9 +110,20 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     private fun getAllCategories() {
         viewModelScope.launch {
             _isLoadingCategories.postValue(true)
-            val categories = norrisRepository.getCategories()
-            _categories.postValue(categories)
-            _isLoadingCategories.postValue(false)
+            try {
+                val categories = norrisRepository.getCategories()
+                _categories.postValue(categories)
+            } catch (e: Exception) {
+                _loadingCategoriesError.postValue(
+                    "couldn't load the categories :/ "
+                )
+            } catch (e: UnknownHostException) {
+                _loadingCategoriesError.postValue(
+                    "host connection problem :/ \n check your internet connection"
+                )
+            } finally {
+                _isLoadingCategories.postValue(false)
+            }
         }
     }
 

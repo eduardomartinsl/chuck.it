@@ -9,4 +9,7 @@
     <string name="quote_icon">quote icon</string>
     <string name="category">Category</string>
     <string name="hashtag_category">#Category</string>
+    <string name="connection_problem">ops, problem with the connection :/ \n please, try again</string>
+    <string name="generic_problem">ops, problem found :/ please, try again</string>
+    <string name="empty_search_result">ops, nothing found.</string>
 </resources>
