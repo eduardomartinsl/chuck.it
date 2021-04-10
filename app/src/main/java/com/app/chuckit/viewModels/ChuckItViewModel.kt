@@ -10,6 +10,7 @@ import com.app.chuckit.R
 import com.app.chuckit.component
 import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.repository.NorrisRepository
+import com.app.chuckit.utils.SearchSugestionsHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -102,7 +103,10 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
     private fun loadSearchSugestions() {
         viewModelScope.launch {
-            val searchSugestions = norrisRepository.loadSearchSugestions()
+            val searchSugestions =
+                norrisRepository.loadSearchSugestions().also { searchSugestions ->
+                    SearchSugestionsHelper.reverseOrderSearchSugestions(searchSugestions)
+                }
             _searchSugestions.postValue(searchSugestions)
         }
     }
