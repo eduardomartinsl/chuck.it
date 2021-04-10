@@ -2,6 +2,8 @@ package com.app.chuckit.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -48,6 +50,10 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
             }
         }
 
+        binding.buttonReloadCategories.setOnClickListener {
+            chuckItViewModel.getAllCategories()
+        }
+
         chuckItViewModel.searchSugestions.observe(viewLifecycleOwner,
             {
                 val searchSugestionsAdapter = SearchSugestionsAdapter(it, this)
@@ -63,16 +69,28 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
             }
         )
 
+        chuckItViewModel.areCategoriesAvaliable.observe(
+            viewLifecycleOwner,
+            { areCategoriesAvaliable ->
+                if (areCategoriesAvaliable != null) {
+                    if (!areCategoriesAvaliable) {
+                        binding.buttonReloadCategories.visibility = VISIBLE
+                    }else{
+                        binding.buttonReloadCategories.visibility = GONE
+                    }
+                }
+            })
+
         chuckItViewModel.isLoadingCategories.observe(viewLifecycleOwner, { isLoading ->
             if (isLoading) {
-                binding.loadingDotsCategories.visibility = View.VISIBLE
-                binding.recyclerViewCategories.visibility = View.GONE
+                binding.loadingDotsCategories.visibility = VISIBLE
+                binding.buttonReloadCategories.visibility = GONE
+                binding.recyclerViewCategories.visibility = GONE
             } else {
-                binding.loadingDotsCategories.visibility = View.GONE
-                binding.recyclerViewCategories.visibility = View.VISIBLE
+                binding.loadingDotsCategories.visibility = GONE
+                binding.recyclerViewCategories.visibility = VISIBLE
             }
         })
-
     }
 
     private fun navigateToChuckNorrisFacts() {

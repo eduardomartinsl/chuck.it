@@ -12,4 +12,5 @@
     <string name="connection_problem">ops, problem with the connection :/ \n please, try again</string>
     <string name="generic_problem">ops, problem found :/ please, try again</string>
     <string name="empty_search_result">ops, nothing found.</string>
+    <string name="categories_error_message">couldn\'t find the categories. Try again?</string>
 </resources>

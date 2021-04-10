@@ -40,6 +40,10 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val isLoadingCategories: LiveData<Boolean>
         get() = _isLoadingCategories
 
+    private val _areCategoriesAvaliable = MutableLiveData<Boolean?>(null)
+    val areCategoriesAvaliable: LiveData<Boolean?>
+        get() = _areCategoriesAvaliable
+
     private val _categories = MutableLiveData<List<String>>()
     val categories: LiveData<List<String>>
         get() = _categories
@@ -51,10 +55,6 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     private val _loadingFactsError = MutableLiveData<String?>()
     val loadingFactsError: LiveData<String?>
         get() = _loadingFactsError
-
-    private val _loadingCategoriesError = MutableLiveData<String>()
-    val loadingCategoriesError: LiveData<String>
-        get() = _loadingCategoriesError
 
     fun loadSearchSugestionsAndCategories() {
         loadSearchSugestions()
@@ -107,20 +107,17 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    private fun getAllCategories() {
+    fun getAllCategories() {
         viewModelScope.launch {
             _isLoadingCategories.postValue(true)
             try {
                 val categories = norrisRepository.getCategories()
                 _categories.postValue(categories)
+                _areCategoriesAvaliable.postValue(true)
             } catch (e: Exception) {
-                _loadingCategoriesError.postValue(
-                    "couldn't load the categories :/ "
-                )
-            } catch (e: UnknownHostException) {
-                _loadingCategoriesError.postValue(
-                    "host connection problem :/ \n check your internet connection"
-                )
+                _areCategoriesAvaliable.postValue(false)
+                delay(500)
+                _areCategoriesAvaliable.postValue(null)
             } finally {
                 _isLoadingCategories.postValue(false)
             }
