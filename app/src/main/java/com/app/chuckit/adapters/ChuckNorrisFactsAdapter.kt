@@ -25,10 +25,6 @@ class ChuckNorrisFactsAdapter(
         )
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chuckNorrisFact = chuckNorrisFacts[position]
         with(chuckNorrisFact) {
@@ -39,7 +35,7 @@ class ChuckNorrisFactsAdapter(
             holder.itemBinding.textViewChuckNorrisFact.text = this.value
 
             holder.itemBinding.textViewChuckNorrisFactCategory.text =
-                formatCategories(chuckNorrisFact.categories)
+                ChuckNorrisFactHelper.formatCategories(chuckNorrisFact.categories)
 
             holder.itemBinding.imageViewShareChuckNorrisFact.setOnClickListener {
                 shareChuckNorrisFactClickListener.onShareChuckNorrisFactClickListener(
@@ -47,17 +43,6 @@ class ChuckNorrisFactsAdapter(
                 )
             }
         }
-    }
-
-    private fun formatCategories(categories: List<String>): String {
-        if (categories.isEmpty()) return "#uncategorized"
-
-        val stringBuilder = StringBuilder()
-
-        for (category in categories) {
-            stringBuilder.append("#$category ")
-        }
-        return stringBuilder.toString()
     }
 
     override fun getItemCount(): Int = chuckNorrisFacts.count()
