@@ -7,6 +7,7 @@ import com.app.chuckit.db.entities.SearchSugestionEntity
 import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.repository.interfaces.BaseNorrisRepository
 import com.app.chuckit.services.NorrisService
+import com.app.chuckit.utils.CategoriesHelper
 import javax.inject.Inject
 
 class NorrisRepository @Inject constructor(
@@ -63,7 +64,7 @@ class NorrisRepository @Inject constructor(
         }
 
         if (categories.isNotEmpty()) {
-            return shuffleAndTakeFirstEightElements(categories)
+            return CategoriesHelper.shuffleAndTakeFirstEightElements(categories)
         }
 
         norrisService.getCategories().also { categoriesFromService ->
@@ -72,12 +73,9 @@ class NorrisRepository @Inject constructor(
                 norrisDao.insertCategories(CategoryEntity(value = category))
             }
 
-            return shuffleAndTakeFirstEightElements(categoriesFromService)
+            return CategoriesHelper.shuffleAndTakeFirstEightElements(categoriesFromService)
         }
     }
-
-    private fun shuffleAndTakeFirstEightElements(categories: List<String>) =
-        categories.shuffled().take(8)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SearchSugestion
