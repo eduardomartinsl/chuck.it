@@ -136,4 +136,6 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$roomVersion"
 
+    // Loading Dots
+    implementation 'com.eyalbira.loadingdots:loading-dots:1.0.2'
 }

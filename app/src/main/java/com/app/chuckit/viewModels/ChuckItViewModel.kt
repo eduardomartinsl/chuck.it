@@ -2,16 +2,19 @@ package com.app.chuckit.viewModels
 
 import android.app.Application
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.app.chuckit.R
 import com.app.chuckit.component
 import com.app.chuckit.models.ChuckNorrisFact
 import com.app.chuckit.repository.NorrisRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 import javax.inject.Inject
+
 
 class ChuckItViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -29,9 +32,17 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val chuckNorrisFacts: LiveData<List<ChuckNorrisFact>>
         get() = _chuckNorrisFacts
 
-    private val _isLoadingChuckNorrisFacts = MutableLiveData(false)
-    val isLoadingChuckNorrisFacts: LiveData<Boolean>
-        get() = _isLoadingChuckNorrisFacts
+    private val _isLoadingFacts = MutableLiveData(false)
+    val isLoadingFacts: LiveData<Boolean>
+        get() = _isLoadingFacts
+
+    private val _isLoadingCategories = MutableLiveData(false)
+    val isLoadingCategories: LiveData<Boolean>
+        get() = _isLoadingCategories
+
+    private val _areCategoriesAvaliable = MutableLiveData<Boolean?>(null)
+    val areCategoriesAvaliable: LiveData<Boolean?>
+        get() = _areCategoriesAvaliable
 
     private val _categories = MutableLiveData<List<String>>()
     val categories: LiveData<List<String>>
@@ -41,6 +52,10 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val searchSugestions: LiveData<List<String>>
         get() = _searchSugestions
 
+    private val _loadingFactsError = MutableLiveData<String?>()
+    val loadingFactsError: LiveData<String?>
+        get() = _loadingFactsError
+
     fun loadSearchSugestionsAndCategories() {
         loadSearchSugestions()
         getAllCategories()
@@ -48,18 +63,40 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
 
     fun searchChuckNorrisFactsWithQuery(query: String) {
         viewModelScope.launch {
-            _isLoadingChuckNorrisFacts.postValue(true)
+            _isLoadingFacts.postValue(true)
             try {
 
                 val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
                 _chuckNorrisFacts.postValue(chuckNorrisFacts)
+                if (chuckNorrisFacts.isEmpty()) {
+                    val emptySearchResult =
+                        getApplication<Application>().resources.getString(R.string.empty_search_result)
+                    loadingFactsErrorPostValue(emptySearchResult)
+                }
 
             } catch (exception: Exception) {
 
-                Log.e("searchException", exception.toString())
+                val genericProblemMessage =
+                    getApplication<Application>().resources.getString(R.string.generic_problem)
+                loadingFactsErrorPostValue(genericProblemMessage)
+
+            } catch (exception: UnknownHostException) {
+
+                val connectionProblemMessage =
+                    getApplication<Application>().resources.getString(R.string.connection_problem)
+                loadingFactsErrorPostValue(connectionProblemMessage)
+
             } finally {
-                _isLoadingChuckNorrisFacts.postValue(false)
+                _isLoadingFacts.postValue(false)
             }
+        }
+    }
+
+    private fun loadingFactsErrorPostValue(emptySearchResult: String) {
+        _loadingFactsError.postValue(emptySearchResult)
+        viewModelScope.launch {
+            delay(500)
+            _loadingFactsError.postValue(null)
         }
     }
 
@@ -70,10 +107,20 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    private fun getAllCategories() {
+    fun getAllCategories() {
         viewModelScope.launch {
-            val categories = norrisRepository.getCategories()
-            _categories.postValue(categories)
+            _isLoadingCategories.postValue(true)
+            try {
+                val categories = norrisRepository.getCategories()
+                _categories.postValue(categories)
+                _areCategoriesAvaliable.postValue(true)
+            } catch (e: Exception) {
+                _areCategoriesAvaliable.postValue(false)
+                delay(500)
+                _areCategoriesAvaliable.postValue(null)
+            } finally {
+                _isLoadingCategories.postValue(false)
+            }
         }
     }
 

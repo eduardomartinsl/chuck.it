@@ -6,9 +6,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.chuckit.R
@@ -35,13 +37,26 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
 
         initiateLayoutManager()
 
-        chuckItViewModel.isLoadingChuckNorrisFacts.observe(viewLifecycleOwner, { isLoading ->
-            //TODO: Loading na tela de ChuckNorrisFacts
+        chuckItViewModel.loadSearchSugestionsAndCategories()
+
+        chuckItViewModel.isLoadingFacts.observe(viewLifecycleOwner, { isLoadingFacts ->
+            if (isLoadingFacts) {
+                binding.loadingDots.visibility = VISIBLE
+                binding.recyclerViewChuckNorrisFacts.visibility = GONE
+            } else {
+                binding.loadingDots.visibility = GONE
+                binding.recyclerViewChuckNorrisFacts.visibility = VISIBLE
+            }
         })
 
         chuckItViewModel.chuckNorrisFacts.observe(viewLifecycleOwner, { chuckNorrisFacts ->
             val chuckNorrisFactsAdapter = ChuckNorrisFactsAdapter(chuckNorrisFacts, this)
             binding.recyclerViewChuckNorrisFacts.adapter = chuckNorrisFactsAdapter
+        })
+
+        chuckItViewModel.loadingFactsError.observe(viewLifecycleOwner, { loadingFactsError ->
+            if (loadingFactsError != null)
+                Toast.makeText(requireContext(), loadingFactsError, Toast.LENGTH_LONG).show()
         })
     }
 
@@ -78,6 +93,7 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
                 val directions =
                     ChuckNorrisFactsFragmentDirections
                         .actionChuckNorrisFactsFragmentToSearchChuckNorrisFactsFragment()
+
                 navigationController.navigate(directions)
                 true
             }
