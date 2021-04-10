@@ -12,7 +12,7 @@ class SearchSugestionsAdapter(
 ) :
     RecyclerView.Adapter<SearchSugestionsAdapter.ViewHolder>() {
 
-    lateinit var itemBinding: ItemSearchSugestionBinding
+    private lateinit var itemBinding: ItemSearchSugestionBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         itemBinding = ItemSearchSugestionBinding.inflate(

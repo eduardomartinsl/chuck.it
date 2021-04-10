@@ -2,7 +2,6 @@ package com.app.chuckit.services
 
 import com.app.chuckit.models.ChuckNorrisFactsResultByQuery
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NorrisService {

@@ -13,11 +13,12 @@
         <action
             android:id="@+id/action_chuckNorrisFactsFragment_to_searchChuckNorrisFactsFragment"
             app:destination="@id/searchChuckNorrisFactsFragment"
-            app:launchSingleTop="true" />
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/searchChuckNorrisFactsFragment"
         android:name="com.app.chuckit.ui.fragments.SearchChuckNorrisFactsFragment"
         android:label="SearchChuckNorrisFactsFragment"
-        tools:layout="@layout/fragment_search_chuck_norris_facts"/>
+        tools:layout="@layout/fragment_search_chuck_norris_facts" />
 </navigation>
