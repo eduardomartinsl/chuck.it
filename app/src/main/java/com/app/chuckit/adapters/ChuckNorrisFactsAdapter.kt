@@ -27,12 +27,12 @@ class ChuckNorrisFactsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chuckNorrisFact = chuckNorrisFacts[position]
+
         with(chuckNorrisFact) {
+            holder.itemBinding.textViewChuckNorrisFact.text = this.value
 
             holder.itemBinding.textViewChuckNorrisFact.textSize =
                 ChuckNorrisFactHelper.getTextSize(chuckNorrisFact.value.length)
-
-            holder.itemBinding.textViewChuckNorrisFact.text = this.value
 
             holder.itemBinding.textViewChuckNorrisFactCategory.text =
                 ChuckNorrisFactHelper.formatCategories(chuckNorrisFact.categories)
