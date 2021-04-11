@@ -12,26 +12,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.chuckit.R
 import com.app.chuckit.adapters.CategoriesAdapter
-import com.app.chuckit.adapters.SearchSugestionsAdapter
-import com.app.chuckit.databinding.FragmentSearchChuckNorrisFactsBinding
+import com.app.chuckit.adapters.SearchHistoryAdapter
+import com.app.chuckit.databinding.FragmentSearchNorrisFactsBinding
 import com.app.chuckit.interfaces.SearchItemClickListener
 import com.app.chuckit.viewModels.ChuckItViewModel
 
-class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_norris_facts),
+class SearchNorrisFactsFragment : Fragment(R.layout.fragment_search_norris_facts),
     SearchItemClickListener {
 
     private val chuckItViewModel by activityViewModels<ChuckItViewModel>()
     private val navController by lazy { findNavController() }
-    private lateinit var binding: FragmentSearchChuckNorrisFactsBinding
+    private lateinit var binding: FragmentSearchNorrisFactsBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentSearchChuckNorrisFactsBinding.bind(view)
+        binding = FragmentSearchNorrisFactsBinding.bind(view)
 
         initiateLayoutManager()
 
-        chuckItViewModel.loadSearchSugestionsAndCategories()
+        chuckItViewModel.loadSearchHistoryAndCategories()
 
         binding.editTextSearch.setOnEditorActionListener { textView, actionId, _ ->
             when (actionId) {
@@ -40,9 +40,9 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
                     val searchStr = textView.text.toString()
 
                     with(chuckItViewModel) {
-                        this.saveSearchSugestion(searchStr)
-                        this.searchChuckNorrisFactsWithQuery(searchStr)
-                        navigateToChuckNorrisFacts()
+                        this.saveSearchHistory(searchStr)
+                        this.searchNorrisFactsWithQuery(searchStr)
+                        navigateToNorrisFacts()
                     }
                     true
                 }
@@ -54,10 +54,10 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
             chuckItViewModel.getAllCategories()
         }
 
-        chuckItViewModel.searchSugestions.observe(viewLifecycleOwner,
+        chuckItViewModel.searchHistory.observe(viewLifecycleOwner,
             {
-                val searchSugestionsAdapter = SearchSugestionsAdapter(it, this)
-                binding.recyclerViewSearchSugestions.adapter = searchSugestionsAdapter
+                val searchHistoryAdapter = SearchHistoryAdapter(it, this)
+                binding.recyclerViewSearchHistory.adapter = searchHistoryAdapter
             }
         )
 
@@ -75,7 +75,7 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
                 if (areCategoriesAvaliable != null) {
                     if (!areCategoriesAvaliable) {
                         binding.buttonReloadCategories.visibility = VISIBLE
-                    }else{
+                    } else {
                         binding.buttonReloadCategories.visibility = GONE
                     }
                 }
@@ -93,13 +93,13 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
         })
     }
 
-    private fun navigateToChuckNorrisFacts() {
+    private fun navigateToNorrisFacts() {
         navController.popBackStack()
     }
 
     override fun onSearchItemClickListener(SearchStr: String) {
-        chuckItViewModel.searchChuckNorrisFactsWithQuery(SearchStr)
-        navigateToChuckNorrisFacts()
+        chuckItViewModel.searchNorrisFactsWithQuery(SearchStr)
+        navigateToNorrisFacts()
     }
 
     private fun initiateLayoutManager() {
@@ -119,6 +119,6 @@ class SearchChuckNorrisFactsFragment : Fragment(R.layout.fragment_search_chuck_n
                 LinearLayoutManager.VERTICAL,
                 false
             )
-        binding.recyclerViewSearchSugestions.layoutManager = linearLayoutManagerVertical
+        binding.recyclerViewSearchHistory.layoutManager = linearLayoutManagerVertical
     }
 }

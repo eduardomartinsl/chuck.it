@@ -8,6 +8,10 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+/**
+ * Provides Database Modules for the DI
+ */
+
 @Module
 class DBModule {
 

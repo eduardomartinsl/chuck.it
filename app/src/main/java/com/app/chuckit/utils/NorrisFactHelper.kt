@@ -1,11 +1,10 @@
 package com.app.chuckit.utils
 
-import android.util.Log
 import com.app.chuckit.utils.Constants.CHARACTER_LIMIT_TO_UPPERCASE
 import com.app.chuckit.utils.Constants.TEXT_LARGE_SIZE
 import com.app.chuckit.utils.Constants.TEXT_NORMAL_SIZE
 
-object ChuckNorrisFactHelper {
+object NorrisFactHelper {
     fun getTextSize(textLenght: Int): Float {
         return if (textLenght < CHARACTER_LIMIT_TO_UPPERCASE) {
             TEXT_LARGE_SIZE

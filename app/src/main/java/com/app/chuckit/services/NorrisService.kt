@@ -1,6 +1,6 @@
 package com.app.chuckit.services
 
-import com.app.chuckit.models.ChuckNorrisFactsResultByQuery
+import com.app.chuckit.models.NorrisFactsResultByQuery
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,5 +10,5 @@ interface NorrisService {
     suspend fun getCategories(): List<String>
 
     @GET("search/")
-    suspend fun searchChuckNorrisFactsWithQuery(@Query("query") query: String): ChuckNorrisFactsResultByQuery
+    suspend fun searchNorrisFactsWithQuery(@Query("query") query: String): NorrisFactsResultByQuery
 }

@@ -2,7 +2,7 @@ package com.app.chuckit.models
 
 import com.google.gson.annotations.SerializedName
 
-data class ChuckNorrisFact(
+data class NorrisFact(
     @SerializedName("id")
     val id: String,
 

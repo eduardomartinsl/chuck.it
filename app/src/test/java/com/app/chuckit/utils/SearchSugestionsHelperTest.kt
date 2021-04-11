@@ -15,7 +15,7 @@ class SearchSugestionsHelperTest {
         )
 
         val reversedSearchSugestions =
-            SearchSugestionsHelper.reverseOrderSearchSugestions(searchSugestions)
+            SearchSugestionsHelper.reverseOrderSearchHistory(searchSugestions)
 
         assertThat(reversedSearchSugestions[0]).isEqualTo("trump")
     }

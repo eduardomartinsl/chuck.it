@@ -41,14 +41,14 @@ class CategoriesHelperTest{
     @Test
     fun `garante que lista de categorias vazias retorna #uncategorized`() {
         val categories = emptyList<String>()
-        val formatedCategories = ChuckNorrisFactHelper.formatCategories(categories)
+        val formatedCategories = NorrisFactHelper.formatCategories(categories)
 
         assertThat(formatedCategories).isEqualTo("#uncategorized")
     }
 
     @Test
     fun `garante que categorias retornam string formatada`() {
-        val formatedCategories = ChuckNorrisFactHelper.formatCategories(categories)
+        val formatedCategories = NorrisFactHelper.formatCategories(categories)
         assertThat(formatedCategories).isEqualTo("#animal #career #celebrity #dev #explicit #fashion #food #history #money #movie #music #political #religion #science #sport #travel ")
     }
 }

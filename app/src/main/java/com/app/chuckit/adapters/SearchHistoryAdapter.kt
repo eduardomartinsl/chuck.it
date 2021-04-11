@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.chuckit.databinding.ItemSearchSugestionBinding
 import com.app.chuckit.interfaces.SearchItemClickListener
 
-class SearchSugestionsAdapter(
+class SearchHistoryAdapter(
     private val searchSugestions: List<String>,
     private val searchItemClickListener: SearchItemClickListener
 ) :
-    RecyclerView.Adapter<SearchSugestionsAdapter.ViewHolder>() {
+    RecyclerView.Adapter<SearchHistoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 

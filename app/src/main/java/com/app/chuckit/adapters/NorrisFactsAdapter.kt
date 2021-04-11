@@ -3,21 +3,21 @@ package com.app.chuckit.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.chuckit.databinding.ItemChuckNorrisFactBinding
-import com.app.chuckit.interfaces.ShareChuckNorrisFactClickListener
-import com.app.chuckit.models.ChuckNorrisFact
-import com.app.chuckit.utils.ChuckNorrisFactHelper
+import com.app.chuckit.databinding.ItemNorrisFactBinding
+import com.app.chuckit.interfaces.ShareNorrisFactClickListener
+import com.app.chuckit.models.NorrisFact
+import com.app.chuckit.utils.NorrisFactHelper
 
 
-class ChuckNorrisFactsAdapter(
-    private val chuckNorrisFacts: List<ChuckNorrisFact>,
-    private val shareChuckNorrisFactClickListener: ShareChuckNorrisFactClickListener
+class NorrisFactsAdapter(
+    private val norrisFacts: List<NorrisFact>,
+    private val shareNorrisFactClickListener: ShareNorrisFactClickListener
 ) :
-    RecyclerView.Adapter<ChuckNorrisFactsAdapter.ViewHolder>() {
+    RecyclerView.Adapter<NorrisFactsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemChuckNorrisFactBinding.inflate(
+            ItemNorrisFactBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -26,30 +26,30 @@ class ChuckNorrisFactsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val chuckNorrisFact = chuckNorrisFacts[position]
+        val norrisFact = norrisFacts[position]
 
-        with(chuckNorrisFact) {
+        with(norrisFact) {
             holder.itemBinding.textViewChuckNorrisFact.text = this.value
 
             holder.itemBinding.textViewChuckNorrisFact.textSize =
-                ChuckNorrisFactHelper.getTextSize(chuckNorrisFact.value.length)
+                NorrisFactHelper.getTextSize(norrisFact.value.length)
 
             holder.itemBinding.textViewChuckNorrisFactCategory.text =
-                ChuckNorrisFactHelper.formatCategories(chuckNorrisFact.categories)
+                NorrisFactHelper.formatCategories(norrisFact.categories)
 
             holder.itemBinding.imageViewShareChuckNorrisFact.setOnClickListener {
-                shareChuckNorrisFactClickListener.onShareChuckNorrisFactClickListener(
-                    chuckNorrisFact.url
+                shareNorrisFactClickListener.onShareNorrisFactClickListener(
+                    norrisFact.url
                 )
             }
         }
     }
 
-    override fun getItemCount(): Int = chuckNorrisFacts.count()
+    override fun getItemCount(): Int = norrisFacts.count()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    inner class ViewHolder(val itemBinding: ItemChuckNorrisFactBinding) :
+    inner class ViewHolder(val itemBinding: ItemNorrisFactBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
