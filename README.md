@@ -1,8 +1,10 @@
+<img src="https://user-images.githubusercontent.com/19932086/114314984-fafeb580-9aca-11eb-898f-2168ee405b4a.png" height=200>
+
 # Chuck it
 [![Build Status](https://github.com/eduardomartinsl/chuck.it/actions/workflows/android_build.yml/badge.svg?branch=develop)](https://github.com/eduardomartinsl/chuck.it/tree/develop)
 
 ## what is chuck it?
-Wanna know more about Chuck Norris? Chuck it can help you! The application can show you some Chuck Norris Facts based on the api.chucknorris.io API! **Try it out!**
+Wanna know more about Chuck Norris? Chuck it can help you! The application can show you some Chuck Norris Facts based on the [chuck norris API][api.chucknorris.io]! **Try it out!**
 
 ## Project Setup
 
@@ -47,3 +49,6 @@ Every new implementation should come from the **develop** branch, and any merge 
 
 - **Gradlew test** for Unity Tests
 - **Gradlew connectedAndroidTest** For integrated tests
+
+[loading-dots]: <https://github.com/EyalBira/loading-dots>
+[api.chucknorris.io]: <https://api.chucknorris.io>
