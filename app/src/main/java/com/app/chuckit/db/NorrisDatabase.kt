@@ -5,15 +5,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.app.chuckit.db.dao.NorrisDao
 import com.app.chuckit.db.entities.CategoryEntity
-import com.app.chuckit.db.entities.ChuckNorrisFactsEntity
-import com.app.chuckit.db.entities.SearchSugestionEntity
+import com.app.chuckit.db.entities.NorrisFactsEntity
+import com.app.chuckit.db.entities.SearchHistoryEntity
 import com.app.chuckit.utils.Converters
 
 @Database(
     entities = [
-        ChuckNorrisFactsEntity::class,
+        NorrisFactsEntity::class,
         CategoryEntity::class,
-        SearchSugestionEntity::class
+        SearchHistoryEntity::class
     ],
     version = 1,
     exportSchema = false

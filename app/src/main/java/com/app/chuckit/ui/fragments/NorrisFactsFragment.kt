@@ -14,50 +14,49 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.chuckit.R
-import com.app.chuckit.adapters.ChuckNorrisFactsAdapter
-import com.app.chuckit.databinding.FragmentChuckNorrisFactsBinding
-import com.app.chuckit.interfaces.ShareChuckNorrisFactClickListener
+import com.app.chuckit.adapters.NorrisFactsAdapter
+import com.app.chuckit.databinding.FragmentNorrisFactsBinding
+import com.app.chuckit.interfaces.ShareNorrisFactClickListener
 import com.app.chuckit.viewModels.ChuckItViewModel
 
-class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
-    ShareChuckNorrisFactClickListener {
+class NorrisFactsFragment : Fragment(R.layout.fragment_norris_facts),
+    ShareNorrisFactClickListener {
 
     private val chuckItViewModel by activityViewModels<ChuckItViewModel>()
-
-    private val navigationController by lazy {
-        findNavController()
-    }
-
-    private lateinit var binding: FragmentChuckNorrisFactsBinding
+    private val navigationController by lazy { findNavController() }
+    private lateinit var binding: FragmentNorrisFactsBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentChuckNorrisFactsBinding.bind(view)
+        binding = FragmentNorrisFactsBinding.bind(view)
 
         initiateLayoutManager()
 
-        chuckItViewModel.loadSearchSugestionsAndCategories()
+        chuckItViewModel.loadSearchHistoryAndCategories()
 
         chuckItViewModel.isLoadingFacts.observe(viewLifecycleOwner, { isLoadingFacts ->
             if (isLoadingFacts) {
                 binding.loadingDots.visibility = VISIBLE
-                binding.recyclerViewChuckNorrisFacts.visibility = GONE
+                binding.recyclerViewNorrisFacts.visibility = GONE
             } else {
                 binding.loadingDots.visibility = GONE
-                binding.recyclerViewChuckNorrisFacts.visibility = VISIBLE
+                binding.recyclerViewNorrisFacts.visibility = VISIBLE
             }
         })
 
-        chuckItViewModel.chuckNorrisFacts.observe(viewLifecycleOwner, { chuckNorrisFacts ->
-            val chuckNorrisFactsAdapter = ChuckNorrisFactsAdapter(chuckNorrisFacts, this)
-            binding.recyclerViewChuckNorrisFacts.adapter = chuckNorrisFactsAdapter
+        chuckItViewModel.norrisFacts.observe(viewLifecycleOwner, { NorrisFacts ->
+            val norrisFactsAdapter = NorrisFactsAdapter(NorrisFacts, this)
+            binding.recyclerViewNorrisFacts.adapter = norrisFactsAdapter
         })
 
-        chuckItViewModel.loadingFactsError.observe(viewLifecycleOwner, { loadingFactsError ->
-            if (loadingFactsError != null)
-                Toast.makeText(requireContext(), loadingFactsError, Toast.LENGTH_LONG).show()
-        })
+        chuckItViewModel.loadingNorrisFactsError.observe(
+            viewLifecycleOwner,
+            { loadingNorrisFactsError ->
+                if (loadingNorrisFactsError != null)
+                    Toast.makeText(requireContext(), loadingNorrisFactsError, Toast.LENGTH_LONG)
+                        .show()
+            })
     }
 
     override fun onResume() {
@@ -74,7 +73,7 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
                 false
             )
 
-        binding.recyclerViewChuckNorrisFacts.layoutManager = linearLayoutManagerVertical
+        binding.recyclerViewNorrisFacts.layoutManager = linearLayoutManagerVertical
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,10 +88,10 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_search_chuck_norris_facts -> {
+            R.id.action_search_norris_facts -> {
                 val directions =
-                    ChuckNorrisFactsFragmentDirections
-                        .actionChuckNorrisFactsFragmentToSearchChuckNorrisFactsFragment()
+                    NorrisFactsFragmentDirections
+                        .actionNorrisFactsFragmentToSearchNorrisFactsFragment()
 
                 navigationController.navigate(directions)
                 true
@@ -101,7 +100,7 @@ class ChuckNorrisFactsFragment : Fragment(R.layout.fragment_chuck_norris_facts),
         }
     }
 
-    override fun onShareChuckNorrisFactClickListener(factURL: String) {
+    override fun onShareNorrisFactClickListener(factURL: String) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, "Check this Chuck Norris Fact! $factURL")

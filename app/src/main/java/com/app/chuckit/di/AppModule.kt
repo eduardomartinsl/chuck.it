@@ -8,11 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * Provê componentes que fazem jus a aplicação
- * [provideApp]
- * [provideContext]
- * [provideSharedPreferences]
- *
+ * Provides Application Modules for the DI
  */
 @Module
 open class AppModule(private val app: Application, private val context: Context) {

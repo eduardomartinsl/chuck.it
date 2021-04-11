@@ -3,8 +3,8 @@ package com.app.chuckit.db.dao
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import com.app.chuckit.db.entities.CategoryEntity
-import com.app.chuckit.db.entities.ChuckNorrisFactsEntity
-import com.app.chuckit.db.entities.SearchSugestionEntity
+import com.app.chuckit.db.entities.NorrisFactsEntity
+import com.app.chuckit.db.entities.SearchHistoryEntity
 
 @Dao
 interface NorrisDao {
@@ -13,16 +13,16 @@ interface NorrisDao {
     // ChuckNorrisFactsEntity
 
     @Query("SELECT * FROM chuck_norris_facts")
-    suspend fun selectAllChuckNorrisFacts(): List<ChuckNorrisFactsEntity>
+    suspend fun selectAllNorrisFacts(): List<NorrisFactsEntity>
 
-    @Insert(onConflict = REPLACE, entity = ChuckNorrisFactsEntity::class)
-    suspend fun insertChuckNorrisFact(vararg chuckNorrisFactsEntity: ChuckNorrisFactsEntity)
+    @Insert(onConflict = REPLACE, entity = NorrisFactsEntity::class)
+    suspend fun insertNorrisFact(vararg norrisFactsEntity: NorrisFactsEntity)
 
     @Delete
-    suspend fun deleteChuckNorrisFact(chuckNorrisFactsEntity: ChuckNorrisFactsEntity)
+    suspend fun deleteNorrisFact(norrisFactsEntity: NorrisFactsEntity)
 
     @Query("DELETE FROM chuck_norris_facts")
-    suspend fun deleteAllFromChuckNorrisFact()
+    suspend fun deleteAllFromNorrisFact()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // CategoriesEntity
@@ -34,11 +34,11 @@ interface NorrisDao {
     suspend fun selectAllCategories(): List<CategoryEntity>
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // SearchSugestionEntity
+    // SearchHistoryEntity
 
-    @Insert(onConflict = REPLACE, entity = SearchSugestionEntity::class)
-    suspend fun insertSearchSugestion(vararg searchSugestionEntity: SearchSugestionEntity)
+    @Insert(onConflict = REPLACE, entity = SearchHistoryEntity::class)
+    suspend fun insertSearchHistory(vararg searchHistoryEntity: SearchHistoryEntity)
 
-    @Query("SELECT * FROM searchsugestionEntity")
-    suspend fun selectAllSearchSugestions(): List<SearchSugestionEntity>
+    @Query("SELECT * FROM SearchHistoryEntity")
+    suspend fun selectAllSearchHistory(): List<SearchHistoryEntity>
 }

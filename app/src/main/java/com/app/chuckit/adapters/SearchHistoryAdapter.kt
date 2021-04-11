@@ -6,28 +6,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.chuckit.databinding.ItemSearchSugestionBinding
 import com.app.chuckit.interfaces.SearchItemClickListener
 
-class SearchSugestionsAdapter(
+class SearchHistoryAdapter(
     private val searchSugestions: List<String>,
     private val searchItemClickListener: SearchItemClickListener
 ) :
-    RecyclerView.Adapter<SearchSugestionsAdapter.ViewHolder>() {
-
-    private lateinit var itemBinding: ItemSearchSugestionBinding
+    RecyclerView.Adapter<SearchHistoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        itemBinding = ItemSearchSugestionBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+
+        return ViewHolder(
+            ItemSearchSugestionBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
-        return ViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val searchSugestion = searchSugestions[position]
         with(searchSugestion) {
-
-            itemBinding.textViewSearchSugestion.text = this
+            holder.itemBinding.textViewSearchSugestion.text = this
 
             holder.itemView.setOnClickListener {
                 searchItemClickListener.onSearchItemClickListener(this)
@@ -39,7 +38,7 @@ class SearchSugestionsAdapter(
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    inner class ViewHolder(itemBinding: ItemSearchSugestionBinding) :
+    inner class ViewHolder(val itemBinding: ItemSearchSugestionBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
