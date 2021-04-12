@@ -18,6 +18,9 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
+      - name: "Run UI Tests"
+        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+
       - name: Run integratedTests
         run: ./gradlew connectedAndroidTest
 
