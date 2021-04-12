@@ -36,6 +36,9 @@ interface NorrisDao {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SearchHistoryEntity
 
+    @Query("SELECT * FROM SearchHistoryEntity WHERE value = :searchHistory")
+    suspend fun selectSearchHistory(searchHistory: String): List<SearchHistoryEntity>
+
     @Insert(onConflict = REPLACE, entity = SearchHistoryEntity::class)
     suspend fun insertSearchHistory(vararg searchHistoryEntity: SearchHistoryEntity)
 

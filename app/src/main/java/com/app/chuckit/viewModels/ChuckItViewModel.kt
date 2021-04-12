@@ -104,7 +104,7 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     private fun loadSearchHistory() {
         viewModelScope.launch {
             val searchSugestions =
-                norrisRepository.loadSearchHistory().also { searchSugestions ->
+                norrisRepository.loadSearchHistory().let{ searchSugestions ->
                     SearchSugestionsHelper.reverseOrderSearchHistory(searchSugestions)
                 }
             _searchHistory.postValue(searchSugestions)
