@@ -18,8 +18,8 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
-          - name: Run integratedTests
-              run: ./gradlew connectedAndroidTest
+      - name: Run integratedTests
+        run: ./gradlew connectedAndroidTest
 
       - name: Build project
         run: ./gradlew assemble
