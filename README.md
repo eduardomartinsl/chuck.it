@@ -8,7 +8,8 @@ Wanna know more about Chuck Norris? Chuck it can help you! The application can s
 
 ## Project Setup
 
-Clone the repo, open the project in Android Studio, Sync Gradle and wait for it, hit "Run". **Done!**
+Clone the repo with 
+` git clone https://github.com/eduardomartinsl/chuck.it.git`, open the project in Android Studio, Sync Gradle and wait for it, hit "Run". **Done!**
 
 ## Architecture Overview
 
