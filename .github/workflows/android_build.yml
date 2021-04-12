@@ -5,7 +5,7 @@ on: pull_request
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -15,23 +15,14 @@ jobs:
         with:
           java-version: 1.8
 
-      # Download & install the Android SDK.
-      - uses: malinskiy/action-android/install-sdk@release/0.1.1
-
-      # Set up platform tools like adb.
-      - run: sdkmanager platform-tools
-
-      # Start ADB (and verify that pathing is working correctly).
-      - run: adb devices
-
-      # Verify $ANDROID_HOME is properly set for later Gradle commands.
-      - run: echo $ANDROID_HOME
-
       - name: Run tests
         run: ./gradlew test
 
       - name: "Run UI Tests"
-        uses: faruktoptas/android-github-actions-emulator@latest
+        uses: reactivecircus/android-emulator-runner@v2
+          with:
+            api-level: 29
+            script: ./gradlew connectedCheck
 
       - name: Build project
         run: ./gradlew assemble
