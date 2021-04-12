@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.chuckit.R
 import com.app.chuckit.component
-import com.app.chuckit.models.ChuckNorrisFact
+import com.app.chuckit.models.NorrisFact
 import com.app.chuckit.repository.NorrisRepository
 import com.app.chuckit.utils.SearchSugestionsHelper
 import kotlinx.coroutines.delay
@@ -29,9 +29,9 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
         getApplication<Application>().component.inject(this)
     }
 
-    private val _chuckNorrisFacts = MutableLiveData<List<ChuckNorrisFact>>()
-    val chuckNorrisFacts: LiveData<List<ChuckNorrisFact>>
-        get() = _chuckNorrisFacts
+    private val _norrisFacts = MutableLiveData<List<NorrisFact>>()
+    val norrisFacts: LiveData<List<NorrisFact>>
+        get() = _norrisFacts
 
     private val _isLoadingFacts = MutableLiveData(false)
     val isLoadingFacts: LiveData<Boolean>
@@ -49,27 +49,27 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
     val categories: LiveData<List<String>>
         get() = _categories
 
-    private val _searchSugestions = MutableLiveData<List<String>>()
-    val searchSugestions: LiveData<List<String>>
-        get() = _searchSugestions
+    private val _searchHistory = MutableLiveData<List<String>>()
+    val searchHistory: LiveData<List<String>>
+        get() = _searchHistory
 
     private val _loadingFactsError = MutableLiveData<String?>()
-    val loadingFactsError: LiveData<String?>
+    val loadingNorrisFactsError: LiveData<String?>
         get() = _loadingFactsError
 
-    fun loadSearchSugestionsAndCategories() {
-        loadSearchSugestions()
+    fun loadSearchHistoryAndCategories() {
+        loadSearchHistory()
         getAllCategories()
     }
 
-    fun searchChuckNorrisFactsWithQuery(query: String) {
+    fun searchNorrisFactsWithQuery(query: String) {
         viewModelScope.launch {
             _isLoadingFacts.postValue(true)
             try {
 
-                val chuckNorrisFacts = norrisRepository.searchChuckNorrisFactsWithQuery(query)
-                _chuckNorrisFacts.postValue(chuckNorrisFacts)
-                if (chuckNorrisFacts.isEmpty()) {
+                val norrisFacts = norrisRepository.searchNorrisFactsWithQuery(query)
+                _norrisFacts.postValue(norrisFacts)
+                if (norrisFacts.isEmpty()) {
                     val emptySearchResult =
                         getApplication<Application>().resources.getString(R.string.empty_search_result)
                     loadingFactsErrorPostValue(emptySearchResult)
@@ -101,13 +101,13 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    private fun loadSearchSugestions() {
+    private fun loadSearchHistory() {
         viewModelScope.launch {
             val searchSugestions =
-                norrisRepository.loadSearchSugestions().also { searchSugestions ->
-                    SearchSugestionsHelper.reverseOrderSearchSugestions(searchSugestions)
+                norrisRepository.loadSearchHistory().also { searchSugestions ->
+                    SearchSugestionsHelper.reverseOrderSearchHistory(searchSugestions)
                 }
-            _searchSugestions.postValue(searchSugestions)
+            _searchHistory.postValue(searchSugestions)
         }
     }
 
@@ -128,15 +128,15 @@ class ChuckItViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun saveSearchSugestion(sugestion: String) {
+    fun saveSearchHistory(searchStr: String) {
         viewModelScope.launch {
-            norrisRepository.saveSearchSugestion(sugestion)
+            norrisRepository.saveSearchHistory(searchStr)
         }
     }
 
     fun getAllNorrisFacts() {
         viewModelScope.launch {
-            _chuckNorrisFacts.postValue(norrisRepository.getAllNorrisFacts())
+            _norrisFacts.postValue(norrisRepository.getAllNorrisFacts())
         }
     }
 }

@@ -7,8 +7,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.app.chuckit.db.NorrisDatabase
 import com.app.chuckit.db.entities.CategoryEntity
-import com.app.chuckit.db.entities.ChuckNorrisFactsEntity
-import com.app.chuckit.db.entities.SearchSugestionEntity
+import com.app.chuckit.db.entities.NorrisFactsEntity
+import com.app.chuckit.db.entities.SearchHistoryEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -17,10 +17,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
-//@SmallTest se referem a testes unitários
-//@MediumTest se referem a testes integrados
-//@LargeTest se referem a testes de UI
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -55,14 +51,14 @@ class NorrisDaoTest {
 
     @Test
     fun garante_que_database_nao_possui_chuck_norris_facts() = runBlockingTest {
-        val chuckNorrisFactsList = norrisDao.selectAllChuckNorrisFacts()
-        assertThat(chuckNorrisFactsList).isEmpty()
+        val norrisFactsList = norrisDao.selectAllNorrisFacts()
+        assertThat(norrisFactsList).isEmpty()
     }
 
     @Test
     fun garante_que_chuckNorrisFact_foi_inserido_em_database() = runBlockingTest {
 
-        val chuckNorrisFact = ChuckNorrisFactsEntity(
+        val norrisFact = NorrisFactsEntity(
             id = "id1",
             categories = mutableListOf(),
             createdAt = "data de criação",
@@ -72,16 +68,16 @@ class NorrisDaoTest {
             value = "valor"
         )
 
-        norrisDao.insertChuckNorrisFact(chuckNorrisFact)
+        norrisDao.insertNorrisFact(norrisFact)
 
-        val chuckNorrisFactsList = norrisDao.selectAllChuckNorrisFacts()
-        assertThat(chuckNorrisFactsList).contains(chuckNorrisFact)
+        val norrisFactsList = norrisDao.selectAllNorrisFacts()
+        assertThat(norrisFactsList).contains(norrisFact)
     }
 
     @Test
     fun garante_que_chuckNorrisFact_foi_removido_de_database() = runBlockingTest {
 
-        val chuckNorrisFact = ChuckNorrisFactsEntity(
+        val norrisFact = NorrisFactsEntity(
             id = "id1",
             categories = mutableListOf(),
             createdAt = "data de criação",
@@ -91,25 +87,25 @@ class NorrisDaoTest {
             value = "valor"
         )
 
-        norrisDao.insertChuckNorrisFact(chuckNorrisFact)
-        norrisDao.deleteChuckNorrisFact(chuckNorrisFact)
+        norrisDao.insertNorrisFact(norrisFact)
+        norrisDao.deleteNorrisFact(norrisFact)
 
-        val chuckNorrisFactsList = norrisDao.selectAllChuckNorrisFacts()
+        val norrisFactsList = norrisDao.selectAllNorrisFacts()
 
-        assertThat(chuckNorrisFactsList).doesNotContain(chuckNorrisFact)
+        assertThat(norrisFactsList).doesNotContain(norrisFact)
     }
 
     @Test
     fun garante_que_search_sugestion_foi_inserido_em_database() = runBlockingTest {
 
-        val searchSugestion = SearchSugestionEntity(
+        val searchSugestion = SearchHistoryEntity(
             id = 1,
             value = "searchSugestionValueTest"
         )
 
-        norrisDao.insertSearchSugestion(searchSugestion)
+        norrisDao.insertSearchHistory(searchSugestion)
 
-        val searchSugestions = norrisDao.selectAllSearchSugestions()
+        val searchSugestions = norrisDao.selectAllSearchHistory()
 
         assertThat(searchSugestions).contains(searchSugestion)
     }
@@ -133,8 +129,8 @@ class NorrisDaoTest {
 
     @Test
     fun garante_que_chuck_norris_facts_esta_limpo_apos_deletar_registros() = runBlockingTest {
-        val chuckNorrisfacts = listOf(
-            ChuckNorrisFactsEntity(
+        val Norrisfacts = listOf(
+            NorrisFactsEntity(
                 id = "id1",
                 categories = mutableListOf(),
                 createdAt = "data de criação",
@@ -143,7 +139,7 @@ class NorrisDaoTest {
                 url = "url",
                 value = "valor"
             ),
-            ChuckNorrisFactsEntity(
+            NorrisFactsEntity(
                 id = "id2",
                 categories = mutableListOf(),
                 createdAt = "data de criação",
@@ -152,7 +148,7 @@ class NorrisDaoTest {
                 url = "url",
                 value = "valor"
             ),
-            ChuckNorrisFactsEntity(
+            NorrisFactsEntity(
                 id = "id3",
                 categories = mutableListOf(),
                 createdAt = "data de criação",
@@ -163,27 +159,27 @@ class NorrisDaoTest {
             )
         )
 
-        for (chuckNorrisFact in chuckNorrisfacts)
-            norrisDao.insertChuckNorrisFact(chuckNorrisFact)
+        for (norrisFact in Norrisfacts)
+            norrisDao.insertNorrisFact(norrisFact)
 
-        norrisDao.deleteAllFromChuckNorrisFact()
+        norrisDao.deleteAllFromNorrisFact()
 
-        val chuckNorrisFactsFromPersistance = norrisDao.selectAllChuckNorrisFacts()
+        val norrisFactsFromPersistance = norrisDao.selectAllNorrisFacts()
 
-        assertThat(chuckNorrisFactsFromPersistance).isEmpty()
+        assertThat(norrisFactsFromPersistance).isEmpty()
     }
 
     @Test
     fun garante_que_search_sugestion_nao_foi_inserido_duas_vezes() = runBlockingTest {
-        val searchSugestion = SearchSugestionEntity(
+        val searchSugestion = SearchHistoryEntity(
             id = 1,
             value = "searchSugestionValueTest"
         )
 
-        norrisDao.insertSearchSugestion(searchSugestion)
-        norrisDao.insertSearchSugestion(searchSugestion)
+        norrisDao.insertSearchHistory(searchSugestion)
+        norrisDao.insertSearchHistory(searchSugestion)
 
-        val searchSugestions = norrisDao.selectAllSearchSugestions()
+        val searchSugestions = norrisDao.selectAllSearchHistory()
 
         assertThat(searchSugestions).containsNoDuplicates()
     }

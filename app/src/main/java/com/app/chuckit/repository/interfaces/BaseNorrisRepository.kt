@@ -1,14 +1,14 @@
 package com.app.chuckit.repository.interfaces
 
-import com.app.chuckit.models.ChuckNorrisFact
+import com.app.chuckit.models.NorrisFact
 
 interface BaseNorrisRepository {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    suspend fun searchChuckNorrisFactsWithQuery(query: String) : List<ChuckNorrisFact>
+    suspend fun searchNorrisFactsWithQuery(query: String) : List<NorrisFact>
 
-    suspend fun getAllNorrisFacts() : List<ChuckNorrisFact>
+    suspend fun getAllNorrisFacts() : List<NorrisFact>
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -16,7 +16,7 @@ interface BaseNorrisRepository {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    suspend fun saveSearchSugestion(searchSugestionStr: String)
+    suspend fun saveSearchHistory(searchStr: String)
 
-    suspend fun loadSearchSugestions(): List<String>
+    suspend fun loadSearchHistory(): List<String>
 }

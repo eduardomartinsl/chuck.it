@@ -25,7 +25,7 @@ class CategoriesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
 
-        with(category){
+        with(category) {
             holder.itemBinding.textViewCategory.text = this
 
             holder.itemView.setOnClickListener {

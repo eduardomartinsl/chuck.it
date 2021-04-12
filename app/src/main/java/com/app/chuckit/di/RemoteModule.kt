@@ -22,9 +22,9 @@ class RemoteModule {
     @Singleton
     fun proveRetrofit(): Retrofit {
         val interceptor = HttpLoggingInterceptor()
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
         return Retrofit.Builder()
             .baseUrl(BuildConfig.API_BASE_URL)
