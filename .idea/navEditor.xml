@@ -8,18 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="chuckNorrisFactsFragment">
+                  <entry key="norrisFactsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-269" />
-                            <option name="y" value="4" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_chuckNorrisFactsFragment_to_searchChuckNorrisFactsFragment">
+                            <entry key="action_norrisFactsFragment_to_searchNorrisFactsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -29,13 +29,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="searchChuckNorrisFactsFragment">
+                  <entry key="searchNorrisFactsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-22" />
-                            <option name="y" value="4" />
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
